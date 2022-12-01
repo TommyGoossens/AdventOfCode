@@ -3,6 +3,6 @@
 ################################################################################
 
 /.vs
-/AdventOfCode2022/bin/Debug/net7.0
-/AdventOfCode2022/obj
 /AdventOfCode2022/Day1/advent_of_code_1_input_large.txt
+**/bin
+**/obj

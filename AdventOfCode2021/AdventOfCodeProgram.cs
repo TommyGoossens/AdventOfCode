@@ -1,4 +1,4 @@
-﻿namespace AdventOfCode2022
+﻿namespace AdventOfCode2021
 {
     internal abstract class AdventOfCodeProgram
     {
