@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode2021.Day1
+﻿using AdventOfCodeShared;
+
+namespace AdventOfCode2021.Day1
 {
     internal class ProgramDay1 : AdventOfCodeProgram
     {
@@ -6,16 +8,18 @@
         {
         }
 
-        protected override string Run()
+        protected override string[] Run()
         {
-            string[] lines = File.ReadAllLines(@"Day1\input.txt");
-            var nrOfIncreases = GetAnswerPart1(lines);
-            var nrOfLargerSums = GetAnswerPart2(lines);
-            
-            return $"there are {nrOfIncreases} measurements that are larger than the previous. There are {nrOfLargerSums} sums that are larger than the previous sum";
+            var nrOfIncreases = GetAnswerPart1();
+            var nrOfLargerSums = GetAnswerPart2();
+            return new string[]
+            {
+                $"there are {nrOfIncreases} measurements that are larger than the previous.",
+                $"There are {nrOfLargerSums} sums that are larger than the previous sum"
+            };
         }
 
-        private int GetAnswerPart1(string[] lines)
+        private int GetAnswerPart1()
         {
             int? previousDepth = null;
             int nrOfIncreases = 0;
@@ -30,7 +34,7 @@
             return nrOfIncreases;
         }
 
-        private int GetAnswerPart2(string[] lines)
+        private int GetAnswerPart2()
         {
             int nrOfLargerSums = 0;
             int? previousDepth = null;
@@ -49,7 +53,6 @@
                 }
                 catch (IndexOutOfRangeException)
                 {
-                    Console.WriteLine($"Section at row {i} contains less than 3 measurements");
                     break;
                 }
 

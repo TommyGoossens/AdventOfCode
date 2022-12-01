@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using AdventOfCode2021;
+using AdventOfCodeShared;
 using System.Reflection;
 
 var ProgramList = new List<AdventOfCodeProgram>();

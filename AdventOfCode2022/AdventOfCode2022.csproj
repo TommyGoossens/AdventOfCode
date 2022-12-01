@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="Day1\advent_of_code_1_input.txt">
+    <ProjectReference Include="..\AdventOfCodeShared\AdventOfCodeShared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Day1\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Day1\advent_of_code_1_input_large.txt">
