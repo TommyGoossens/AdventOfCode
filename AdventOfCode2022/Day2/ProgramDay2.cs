@@ -85,14 +85,14 @@ namespace AdventOfCode2022.Day2
                 {
                     StrategyMove.Lose => Interlocked.Add(ref totalScore, GetLosingScore(opponent)),
                     StrategyMove.Draw => Interlocked.Add(ref totalScore, (int)opponent + 3),
-                    StrategyMove.Win => Interlocked.Add(ref totalScore, HandleWinningMove(opponent)),
+                    StrategyMove.Win => Interlocked.Add(ref totalScore, GetWinningScore(opponent)),
                     _ => throw new NotImplementedException(),
                 };
             });
             return totalScore;
         }
 
-        private int HandleWinningMove(RPSMove move)
+        private int GetWinningScore(RPSMove move)
         {
             var playerMoveScore = move switch
             {
