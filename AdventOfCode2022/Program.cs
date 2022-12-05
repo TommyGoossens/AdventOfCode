@@ -9,6 +9,6 @@ foreach (var program in Assembly.GetExecutingAssembly().GetTypes().Where(type =>
     if (Activator.CreateInstance(program) is AdventOfCodeProgram instance) ProgramList.Add(instance);
 }
 
-ProgramList = ProgramList.OrderBy(p => p.DayNumber).ToList();
+ProgramList = ProgramList.OrderByDescending(p => p.DayNumber).ToList();
 
 foreach (var program in ProgramList) Console.WriteLine(program.GetAnswer());

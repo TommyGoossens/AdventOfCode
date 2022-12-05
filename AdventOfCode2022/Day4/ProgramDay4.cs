@@ -1,4 +1,6 @@
 ﻿using AdventOfCodeShared;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AdventOfCode2022.Day4
 {
@@ -10,38 +12,29 @@ namespace AdventOfCode2022.Day4
 
         protected override string[] Run()
         {
-            var allContainedRows = lines.Where(IsContained);
-            var allOverlappingRows = lines.Where(HasOverlap);
-            return new string[] {$"Contained pairs: {allContainedRows.Count()}", $"Pairs with overlap {allOverlappingRows.Count()}" };
+            var splitLines = lines.Select(l => l.Split(new char[] { ',', '-' })).Select(ParseStringsToNumbers);
+            var allContainedRows = splitLines.Where(IsContained);
+            var allOverlappingRows = splitLines.Where(HasOverlap);
+            return new string[] { $"Contained pairs: {allContainedRows.Count()}", $"Pairs with overlap {allOverlappingRows.Count()}" };
         }
 
-        private bool IsContained(string l)
+        private bool IsContained((IEnumerable<int> first, IEnumerable<int> second) arg)
         {
-            var first = l.Split(',')[0];
-            var second = l.Split(',')[1];
-            var firstStart = int.Parse(first.Split('-')[0]);
-            var firstEnd = int.Parse(first.Split('-')[1]);
-            var secondStart = int.Parse(second.Split('-')[0]);
-            var secondEnd = int.Parse(second.Split('-')[1]);
-
-            var firstRange = Enumerable.Range(firstStart, firstEnd - firstStart + 1);
-            var secondRange = Enumerable.Range(secondStart, secondEnd - secondStart + 1);
-            return firstRange.Intersect(secondRange).Count() == firstRange.Count() || secondRange.Intersect(firstRange).Count() == secondRange.Count();
+            var (first, second) = arg;
+            return first.Intersect(second).Count() == first.Count() || second.Intersect(first).Count() == second.Count();
         }
 
-
-        private bool HasOverlap(string l)
+        private (IEnumerable<int> first, IEnumerable<int> second) ParseStringsToNumbers(string[] args)
         {
-            var first = l.Split(',')[0];
-            var second = l.Split(',')[1];
-            var firstStart = int.Parse(first.Split('-')[0]);
-            var firstEnd = int.Parse(first.Split('-')[1]);
-            var secondStart = int.Parse(second.Split('-')[0]);
-            var secondEnd = int.Parse(second.Split('-')[1]);
+            var firstRange = Enumerable.Range(int.Parse(args[0]), int.Parse(args[1]) - int.Parse(args[0]) + 1);
+            var secondRange = Enumerable.Range(int.Parse(args[2]), int.Parse(args[3]) - int.Parse(args[2]) + 1);
+            return (firstRange, secondRange);
+        }
 
-            var firstRange = Enumerable.Range(firstStart, firstEnd - firstStart + 1);
-            var secondRange = Enumerable.Range(secondStart, secondEnd - secondStart + 1);
-            return firstRange.Intersect(secondRange).Any();
+        private bool HasOverlap((IEnumerable<int> first, IEnumerable<int> second) arg)
+        {
+            var (first, second) = arg;
+            return first.Intersect(second).Any();
         }
     }
 }
