@@ -1,17 +1,22 @@
-﻿namespace AdventOfCodeShared
+﻿using System.Text.RegularExpressions;
+
+namespace AdventOfCodeShared
 {
     public abstract class AdventOfCodeProgram
     {
         public int DayNumber { get; private init; }
         protected string[] lines { get; private set; }
 
-        protected AdventOfCodeProgram(int dayNumber, string? text = null)
+        protected AdventOfCodeProgram(string? text = null)
         {
-            DayNumber = dayNumber;
-            lines = string.IsNullOrEmpty(text) ? File.ReadAllLines(@$"Day{dayNumber}\input.txt") : text.Split(Environment.NewLine);
+            var name = this.GetType().Name;
+            var re = new Regex(@"\d+");           
+            DayNumber = int.Parse(re.Match(name).Value);
+            lines = string.IsNullOrEmpty(text) ? File.ReadAllLines(@$"Day{DayNumber}\input.txt") : text.Split(Environment.NewLine);
         }
 
         protected abstract string[] Run();
+
         public string GetAnswer()
         {
             var startTime = DateTime.Now;

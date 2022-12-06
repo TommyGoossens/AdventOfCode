@@ -1,13 +1,14 @@
 ﻿using AdventOfCodeShared;
-using System.Collections.Generic;
+using FluentAssertions;
+using Xunit;
 
 namespace AdventOfCode2022.Day3
 {
-    internal class ProgramDay3 : AdventOfCodeProgram
+    public class ProgramDay3 : AdventOfCodeProgram
     {
         private Dictionary<char, int> letterValues;
 
-        public ProgramDay3() : base(3)
+        public ProgramDay3(string? text = null) : base(text)
         {
             letterValues = new Dictionary<char, int>();
             var allLetters = Enumerable.Range('a', 26);
@@ -56,5 +57,23 @@ namespace AdventOfCode2022.Day3
         }
 
         private int GetValueOfIntersectedChars(IEnumerable<char> chars) => chars.Select(c => letterValues[c]).Sum();
+
+        [Fact]
+        public void RunTestsPartOne()
+        {
+            var program = new ProgramDay3("vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw");
+            var result = program.Run();
+            var part1 = result.FirstOrDefault();
+            part1.Should().EndWithEquivalentOf("157");
+        }
+
+        [Fact]
+        public void RunTestsPartTwo()
+        {
+            var program = new ProgramDay3("vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw");
+            var result = program.Run();
+            var part2 = result.LastOrDefault();
+            part2.Should().EndWithEquivalentOf("70");
+        }
     }
 }

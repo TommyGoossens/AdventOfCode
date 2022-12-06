@@ -1,12 +1,12 @@
 ﻿using AdventOfCodeShared;
-using System.Collections.Generic;
-using System.Linq;
+using FluentAssertions;
+using Xunit;
 
 namespace AdventOfCode2022.Day4
 {
-    internal class ProgramDay4 : AdventOfCodeProgram
+    public class ProgramDay4 : AdventOfCodeProgram
     {
-        public ProgramDay4() : base(4)
+        public ProgramDay4(string? text = null) : base(text)
         {
         }
 
@@ -35,6 +35,24 @@ namespace AdventOfCode2022.Day4
         {
             var (first, second) = arg;
             return first.Intersect(second).Any();
+        }
+
+        [Fact]
+        public void RunTestsPartOne()
+        {
+            var program = new ProgramDay4("2-4,6-8\r\n2-3,4-5\r\n5-7,7-9\r\n2-8,3-7\r\n6-6,4-6\r\n2-6,4-8");
+            var result = program.Run();
+            var part1 = result.FirstOrDefault();
+            part1.Should().EndWithEquivalentOf("2");
+        }
+
+        [Fact]
+        public void RunTestsPartTwo()
+        {
+            var program = new ProgramDay4("2-4,6-8\r\n2-3,4-5\r\n5-7,7-9\r\n2-8,3-7\r\n6-6,4-6\r\n2-6,4-8");
+            var result = program.Run();
+            var part2 = result.LastOrDefault();
+            part2.Should().EndWithEquivalentOf("4");
         }
     }
 }

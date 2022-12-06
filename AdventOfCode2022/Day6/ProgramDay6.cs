@@ -6,7 +6,7 @@ namespace AdventOfCode2022.Day6
 {
     public class ProgramDay6 : AdventOfCodeProgram
     {
-        public ProgramDay6(string? text = null) : base(6, text)
+        public ProgramDay6(string? text = null) : base(text)
         {
         }
 

@@ -4,7 +4,7 @@ namespace AdventOfCode2022.Day1
 {
     internal class ProgramDay1 : AdventOfCodeProgram
     {
-        public ProgramDay1() : base(1)
+        public ProgramDay1() : base()
         { }
 
         protected override string[] Run()

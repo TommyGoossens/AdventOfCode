@@ -45,7 +45,7 @@ namespace AdventOfCode2022.Day2
 
     internal class ProgramDay2 : AdventOfCodeProgram
     {
-        public ProgramDay2() : base(2)
+        public ProgramDay2() : base()
         {
         }
 

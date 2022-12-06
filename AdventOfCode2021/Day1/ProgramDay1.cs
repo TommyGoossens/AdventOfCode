@@ -1,10 +1,12 @@
 ﻿using AdventOfCodeShared;
+using FluentAssertions;
+using Xunit;
 
 namespace AdventOfCode2021.Day1
 {
-    internal class ProgramDay1 : AdventOfCodeProgram
+    public class ProgramDay1 : AdventOfCodeProgram
     {
-        public ProgramDay1() : base(1)
+        public ProgramDay1(string? text = null) : base(text)
         {
         }
 
@@ -14,8 +16,8 @@ namespace AdventOfCode2021.Day1
             var nrOfLargerSums = GetAnswerPart2();
             return new string[]
             {
-                $"there are {nrOfIncreases} measurements that are larger than the previous.",
-                $"There are {nrOfLargerSums} sums that are larger than the previous sum"
+                $"{nrOfIncreases} measurements that are larger than the previous.",
+                $"{nrOfLargerSums} sums that are larger than the previous sum"
             };
         }
 
@@ -62,6 +64,24 @@ namespace AdventOfCode2021.Day1
             }
 
             return nrOfLargerSums;
+        }
+
+        [Fact]
+        public void RunTestsPartOne()
+        {
+            var program = new ProgramDay1("199\r\n200\r\n208\r\n210\r\n200\r\n207\r\n240\r\n269\r\n260\r\n263");
+            var result = program.Run();
+            var part1 = result.FirstOrDefault();
+            part1.Should().StartWithEquivalentOf("7");
+        }
+
+        [Fact]
+        public void RunTestsPartTwo()
+        {
+            var program = new ProgramDay1("199\r\n200\r\n208\r\n210\r\n200\r\n207\r\n240\r\n269\r\n260\r\n263");
+            var result = program.Run();
+            var part2 = result.LastOrDefault();
+            part2.Should().StartWithEquivalentOf("5");
         }
     }
 }

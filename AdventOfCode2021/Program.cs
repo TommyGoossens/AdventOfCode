@@ -6,9 +6,14 @@ var ProgramList = new List<AdventOfCodeProgram>();
 
 foreach (var program in Assembly.GetExecutingAssembly().GetTypes().Where(type => typeof(AdventOfCodeProgram).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract))
 {
-    if (Activator.CreateInstance(program) is AdventOfCodeProgram instance) ProgramList.Add(instance);
+    try
+    {
+        if (Activator.CreateInstance(program, string.Empty) is AdventOfCodeProgram instance) ProgramList.Add(instance);
+    }
+    catch (Exception)
+    {
+        Console.WriteLine($"Unable to create instance of: {program.Name}");
+    }
 }
 
-ProgramList = ProgramList.OrderBy(p => p.DayNumber).ToList();
-
-foreach (var program in ProgramList) Console.WriteLine(program.GetAnswer());
+foreach (var program in ProgramList.OrderByDescending(p => p.DayNumber)) Console.WriteLine(program.GetAnswer());

@@ -1,12 +1,15 @@
-﻿using AdventOfCodeShared;
+﻿using AdventOfCode2022.Day6;
+using AdventOfCodeShared;
+using FluentAssertions;
 using System.Text.RegularExpressions;
+using Xunit;
 
 namespace AdventOfCode2022.Day5
 {
-    internal class ProgramDay5 : AdventOfCodeProgram
+    public class ProgramDay5 : AdventOfCodeProgram
     {
         private string[] actions;
-        public ProgramDay5() : base(5)
+        public ProgramDay5(string? text = null) : base(text)
         {
             actions = Array.Empty<string>();
         }
@@ -92,6 +95,24 @@ namespace AdventOfCode2022.Day5
             var source = parsed.ElementAt(1);
             var dest = parsed.ElementAt(2);
             return (amount, source, dest);
+        }
+
+        [Fact]
+        public void RunTestsPartOne()
+        {
+            var program = new ProgramDay5("    [D]    \r\n[N] [C]    \r\n[Z] [M] [P]\r\n 1   2   3 \r\n\r\nmove 1 from 2 to 1\r\nmove 3 from 1 to 3\r\nmove 2 from 2 to 1\r\nmove 1 from 1 to 2");
+            var result = program.Run();
+            var part1 = result.FirstOrDefault();
+            part1.Should().EndWithEquivalentOf("CMZ");
+        }
+
+        [Fact]
+        public void RunTestsPartTwo()
+        {
+            var program = new ProgramDay5("    [D]    \r\n[N] [C]    \r\n[Z] [M] [P]\r\n 1   2   3 \r\n\r\nmove 1 from 2 to 1\r\nmove 3 from 1 to 3\r\nmove 2 from 2 to 1\r\nmove 1 from 1 to 2");
+            var result = program.Run();
+            var part2 = result.LastOrDefault();
+            part2.Should().EndWithEquivalentOf("MCD");
         }
     }
 }

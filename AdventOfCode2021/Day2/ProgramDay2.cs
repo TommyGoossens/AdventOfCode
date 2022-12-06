@@ -1,24 +1,23 @@
 ﻿using AdventOfCodeShared;
+using FluentAssertions;
+using Xunit;
 
 namespace AdventOfCode2021.Day2
 {
-    internal class ProgramDay2 : AdventOfCodeProgram
+    public class ProgramDay2 : AdventOfCodeProgram
     {
-        public ProgramDay2() : base(2)
+        public ProgramDay2(string? text = null) : base(text)
         {
         }
-
         protected override string[] Run()
         {
             int horizontalPos = 0;
             int part1Depth = 0;
             int part2Depth = 0;
             int aim = 0;
-            foreach (var line in lines)
+
+            foreach ((string direction, int units) in lines.Select(l => (l.Split(' ')[0], int.Parse(l.Split(' ')[1]))))
             {
-                var direction = line.Split(' ')[0];
-                var unitsString = line.Split(' ')[1];
-                var units = int.Parse(unitsString);
                 switch (direction)
                 {
                     case "forward":
@@ -40,6 +39,24 @@ namespace AdventOfCode2021.Day2
                 $"Horizontal * depth = {horizontalPos * part1Depth}",
                 $"Horizontal * depth (adjusted with aim) = {horizontalPos * part2Depth}"
             };
+        }
+
+        [Fact]
+        public void RunTestsPartOne()
+        {
+            var program = new ProgramDay2("forward 5\r\ndown 5\r\nforward 8\r\nup 3\r\ndown 8\r\nforward 2");
+            var result = program.Run();
+            var part1 = result.FirstOrDefault();
+            part1.Should().EndWithEquivalentOf("150");
+        }
+
+        [Fact]
+        public void RunTestsPartTwo()
+        {
+            var program = new ProgramDay2("forward 5\r\ndown 5\r\nforward 8\r\nup 3\r\ndown 8\r\nforward 2");
+            var result = program.Run();
+            var part2 = result.LastOrDefault();
+            part2.Should().EndWithEquivalentOf("900");
         }
     }
 }
