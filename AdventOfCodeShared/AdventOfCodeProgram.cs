@@ -4,11 +4,13 @@
     {
         public int DayNumber { get; private init; }
         protected string[] lines { get; private set; }
-        protected AdventOfCodeProgram(int dayNumber)
+
+        protected AdventOfCodeProgram(int dayNumber, string? text = null)
         {
-            this.DayNumber = dayNumber;
-            lines = File.ReadAllLines(@$"Day{dayNumber}\input.txt");
+            DayNumber = dayNumber;
+            lines = string.IsNullOrEmpty(text) ? File.ReadAllLines(@$"Day{dayNumber}\input.txt") : text.Split(Environment.NewLine);
         }
+
         protected abstract string[] Run();
         public string GetAnswer()
         {
@@ -20,11 +22,6 @@
             for (int i = 0; i < answer.Length; i++) resultMessage += $"Part {i + 1}: [{answer[i]}]{Environment.NewLine}";
             resultMessage += $"Took: {processingTime.TotalSeconds} seconds{Environment.NewLine}";
             return resultMessage;
-        }
-
-        protected void CreateTestInput(string testInput)
-        {
-            lines = testInput.Split(Environment.NewLine);
         }
     }
 }
