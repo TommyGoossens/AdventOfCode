@@ -35,7 +35,7 @@ namespace AdventOfCode2022.Day5
                 currentStack[dest].InsertRange(0, itemsToMove);
 
             }
-            PrintStack(currentStack);
+            //PrintStack(currentStack);
             return currentStack;
         }
 
