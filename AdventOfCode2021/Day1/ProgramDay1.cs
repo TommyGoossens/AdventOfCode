@@ -10,15 +10,16 @@ namespace AdventOfCode2021.Day1
         {
         }
 
-        protected override string[] Run()
+        protected override string RunPartOne()
         {
             var nrOfIncreases = GetAnswerPart1();
+            return $"{nrOfIncreases} measurements that are larger than the previous.";
+        }
+
+        protected override string RunPartTwo()
+        {
             var nrOfLargerSums = GetAnswerPart2();
-            return new string[]
-            {
-                $"{nrOfIncreases} measurements that are larger than the previous.",
-                $"{nrOfLargerSums} sums that are larger than the previous sum"
-            };
+            return $"{nrOfLargerSums} sums that are larger than the previous sum";
         }
 
         private int GetAnswerPart1()
@@ -66,22 +67,22 @@ namespace AdventOfCode2021.Day1
             return nrOfLargerSums;
         }
 
-        [Fact]
-        public void RunTestsPartOne()
+        [Theory]
+        [InlineData("199\r\n200\r\n208\r\n210\r\n200\r\n207\r\n240\r\n269\r\n260\r\n263", "7")]
+        public override void RunTestsPartOne(string input, string expectedResult)
         {
-            var program = new ProgramDay1("199\r\n200\r\n208\r\n210\r\n200\r\n207\r\n240\r\n269\r\n260\r\n263");
-            var result = program.Run();
-            var part1 = result.FirstOrDefault();
-            part1.Should().StartWithEquivalentOf("7");
+            var program = new ProgramDay1(input);
+            var result = program.RunPartOne();
+            result.Should().StartWithEquivalentOf(expectedResult);
         }
 
-        [Fact]
-        public void RunTestsPartTwo()
+        [Theory]
+        [InlineData("199\r\n200\r\n208\r\n210\r\n200\r\n207\r\n240\r\n269\r\n260\r\n263", "5")]
+        public override void RunTestsPartTwo(string input, string expectedResult)
         {
-            var program = new ProgramDay1("199\r\n200\r\n208\r\n210\r\n200\r\n207\r\n240\r\n269\r\n260\r\n263");
-            var result = program.Run();
-            var part2 = result.LastOrDefault();
-            part2.Should().StartWithEquivalentOf("5");
+            var program = new ProgramDay1(input);
+            var result = program.RunPartTwo();
+            result.Should().StartWithEquivalentOf(expectedResult);
         }
     }
 }

@@ -16,17 +16,21 @@ namespace AdventOfCode2022.Day3
             {
                 var letter = (char)allLetters.ElementAt(i);
                 letterValues.Add(letter, i + 1);
-                letterValues.Add(Char.ToUpper(letter), i + 27);
+                letterValues.Add(char.ToUpper(letter), i + 27);
             }
         }
 
-        protected override string[] Run()
+        protected override string RunPartOne()
         {
             var prioritySum = GetAnswerPart1();
-            var badgesSum = GetAnswerPart2();
-            return new string[] { $"The sum of priorities is: {prioritySum}", $"The sum of badges is: {badgesSum}" };
+            return $"The sum of priorities is: {prioritySum}";
         }
 
+        protected override string RunPartTwo()
+        {
+            var badgesSum = GetAnswerPart2();
+            return $"The sum of badges is: {badgesSum}";
+        }
         private int GetAnswerPart1()
         {
             var total = 0;
@@ -58,22 +62,22 @@ namespace AdventOfCode2022.Day3
 
         private int GetValueOfIntersectedChars(IEnumerable<char> chars) => chars.Select(c => letterValues[c]).Sum();
 
-        [Fact]
-        public void RunTestsPartOne()
+        [Theory]
+        [InlineData("vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw", "157")]
+        public override void RunTestsPartOne(string input, string expectedResult)
         {
-            var program = new ProgramDay3("vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw");
-            var result = program.Run();
-            var part1 = result.FirstOrDefault();
-            part1.Should().EndWithEquivalentOf("157");
+            var program = new ProgramDay3(input);
+            var result = program.RunPartOne();
+            result.Should().EndWithEquivalentOf(expectedResult);
         }
 
-        [Fact]
-        public void RunTestsPartTwo()
+        [Theory]
+        [InlineData("vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw", "70")]
+        public override void RunTestsPartTwo(string input, string expectedResult)
         {
-            var program = new ProgramDay3("vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw");
-            var result = program.Run();
-            var part2 = result.LastOrDefault();
-            part2.Should().EndWithEquivalentOf("70");
+            var program = new ProgramDay3(input);
+            var result = program.RunPartTwo();
+            result.Should().EndWithEquivalentOf(expectedResult);
         }
     }
 }

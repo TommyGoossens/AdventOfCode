@@ -10,18 +10,24 @@ namespace AdventOfCode2022.Day6
         {
         }
 
-        protected override string[] Run()
+        protected override string RunPartOne()
         {
             var part1 = GetResult(4);
+
+            return $"{part1.nrOfLettersToProcess} letters processed to get result: {string.Join("", part1.letters)}";
+        }
+
+        protected override string RunPartTwo()
+        {
             var part2 = GetResult(14);
-            return new string[] { $"{part1.nrOfLettersToProcess} letters processed to get result: {string.Join("", part1.letters)}", $"{part2.nrOfLettersToProcess} letters processed to get result: {string.Join("", part2.letters)}" };
+            return $"{part2.nrOfLettersToProcess} letters processed to get result: {string.Join("", part2.letters)}";
         }
 
         private (int nrOfLettersToProcess, IEnumerable<char> letters) GetResult(int nrOfUniqueLetters)
-        {        
+        {
             var line = string.Join("", lines);
             var i = 0;
-            while(line.Skip(i).Take(nrOfUniqueLetters).ToHashSet().Count != nrOfUniqueLetters) i++;
+            while (line.Skip(i).Take(nrOfUniqueLetters).ToHashSet().Count != nrOfUniqueLetters) i++;
             var letters = line.Skip(i).Take(nrOfUniqueLetters);
             return (i + nrOfUniqueLetters, letters);
         }
@@ -32,12 +38,11 @@ namespace AdventOfCode2022.Day6
         [InlineData("nppdvjthqldpwncqszvftbrmjlhg", "6")]
         [InlineData("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", "10")]
         [InlineData("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", "11")]
-        public void PartOneShouldGiveCorrectOutput(string input, string nrOfChars)
+        public override void RunTestsPartOne(string input, string expectedResult)
         {
             var program = new ProgramDay6(input);
-            var result = program.Run();
-            var part1 = result.FirstOrDefault();
-            part1.Should().StartWith(nrOfChars);
+            var result = program.RunPartOne();
+            result.Should().StartWith(expectedResult);
         }
 
         [Theory]
@@ -46,12 +51,11 @@ namespace AdventOfCode2022.Day6
         [InlineData("nppdvjthqldpwncqszvftbrmjlhg", "23")]
         [InlineData("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", "29")]
         [InlineData("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", "26")]
-        public void PartTwoShouldGiveCorrectOutput(string input, string nrOfChars)
+        public override void RunTestsPartTwo(string input, string expectedResult)
         {
             var program = new ProgramDay6(input);
-            var result = program.Run();
-            var part2 = result.LastOrDefault();
-            part2.Should().StartWith(nrOfChars);
+            var result = program.RunPartTwo();
+            result.Should().StartWith(expectedResult);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AdventOfCodeShared;
 using FluentAssertions;
+using System.IO;
 using System.Text.RegularExpressions;
 using Xunit;
 
@@ -58,9 +59,29 @@ namespace AdventOfCode2022.Day7
     {
         public ProgramDay7(string? text = null) : base(text)
         {
+        }        
+        protected override string RunPartTwo()
+        {
+            var listOfAllKnownDirectories = GetListOfAllKnownDirectories();
+            var rootDir = listOfAllKnownDirectories.First(d => d.Name.Equals("/"));
+            var usedSpace = rootDir!.GetTotalSizeOfFiles();
+            var freeSpace = 70000000 - usedSpace;
+            var needToClearUp = 30000000 - freeSpace;
+            var dirsWithMatchingSize = listOfAllKnownDirectories.Where(d => d.GetTotalSizeOfFiles() >= needToClearUp).ToList();
+
+            var part2 = dirsWithMatchingSize.Select(d => d.GetTotalSizeOfFiles()).OrderBy(d => d).First();
+            return $"Size of dir to delete: {part2}";
+        }
+        protected override string RunPartOne()
+        {
+            var listOfAllKnownDirectories = GetListOfAllKnownDirectories();
+
+            var part1 = listOfAllKnownDirectories.Where(d => d.GetTotalSizeOfFiles() <= 100000).Sum(d => d.GetTotalSizeOfFiles());
+
+            return $"Sum of files: {part1}";
         }
 
-        protected override string[] Run()
+        private IEnumerable<Directory> GetListOfAllKnownDirectories()
         {
             var directoryTree = new Stack<Directory>();
             var listOfAllKnownDirectories = new List<Directory>();
@@ -79,39 +100,31 @@ namespace AdventOfCode2022.Day7
                 }
                 else if (l.Equals("$ cd .."))
                 {
-                    directoryTree.Pop();                    
+                    directoryTree.Pop();
                     currentDir = directoryTree.First();
                 }
                 else if (l.Equals("$ ls")) continue;
                 else currentDir?.AddFile(l);
             }
-
-            var part1 = listOfAllKnownDirectories.Where(d => d.GetTotalSizeOfFiles() <= 100000).Sum(d => d.GetTotalSizeOfFiles());
-            var usedSpace = rootDir!.GetTotalSizeOfFiles();
-            var freeSpace = 70000000 - usedSpace;
-            var needToClearUp = 30000000 - freeSpace;
-            var dirsWithMatchingSize = listOfAllKnownDirectories.Where(d => d.GetTotalSizeOfFiles() >= needToClearUp).ToList();
-            
-            var part2 = dirsWithMatchingSize.Select(d => d.GetTotalSizeOfFiles()).OrderBy(d => d).First();
-            return new[] { $"Sum of files: {part1}", $"Size of dir to delete: {part2}" };
+            return listOfAllKnownDirectories;
         }
 
-        [Fact]
-        public void RunTestsPartOne()
+        [Theory]
+        [InlineData("$ cd /\r\n$ ls\r\ndir a\r\n14848514 b.txt\r\n8504156 c.dat\r\ndir d\r\n$ cd a\r\n$ ls\r\ndir e\r\n29116 f\r\n2557 g\r\n62596 h.lst\r\n$ cd e\r\n$ ls\r\n584 i\r\n$ cd ..\r\n$ cd ..\r\n$ cd d\r\n$ ls\r\n4060174 j\r\n8033020 d.log\r\n5626152 d.ext\r\n7214296 k", "95437")]
+        public override void RunTestsPartOne(string input, string expectedResult)
         {
-            var program = new ProgramDay7("$ cd /\r\n$ ls\r\ndir a\r\n14848514 b.txt\r\n8504156 c.dat\r\ndir d\r\n$ cd a\r\n$ ls\r\ndir e\r\n29116 f\r\n2557 g\r\n62596 h.lst\r\n$ cd e\r\n$ ls\r\n584 i\r\n$ cd ..\r\n$ cd ..\r\n$ cd d\r\n$ ls\r\n4060174 j\r\n8033020 d.log\r\n5626152 d.ext\r\n7214296 k");
-            var result = program.Run();
-            var part1 = result.FirstOrDefault();
-            part1.Should().EndWithEquivalentOf("95437");
+            var program = new ProgramDay7(input);
+            var result = program.RunPartOne();
+            result.Should().EndWithEquivalentOf(expectedResult);
         }
 
-        [Fact]
-        public void RunTestsPartTwo()
+        [Theory]
+        [InlineData("$ cd /\r\n$ ls\r\ndir a\r\n14848514 b.txt\r\n8504156 c.dat\r\ndir d\r\n$ cd a\r\n$ ls\r\ndir e\r\n29116 f\r\n2557 g\r\n62596 h.lst\r\n$ cd e\r\n$ ls\r\n584 i\r\n$ cd ..\r\n$ cd ..\r\n$ cd d\r\n$ ls\r\n4060174 j\r\n8033020 d.log\r\n5626152 d.ext\r\n7214296 k", "24933642")]
+        public override void RunTestsPartTwo(string input, string expectedResult)
         {
-            var program = new ProgramDay7("$ cd /\r\n$ ls\r\ndir a\r\n14848514 b.txt\r\n8504156 c.dat\r\ndir d\r\n$ cd a\r\n$ ls\r\ndir e\r\n29116 f\r\n2557 g\r\n62596 h.lst\r\n$ cd e\r\n$ ls\r\n584 i\r\n$ cd ..\r\n$ cd ..\r\n$ cd d\r\n$ ls\r\n4060174 j\r\n8033020 d.log\r\n5626152 d.ext\r\n7214296 k");
-            var result = program.Run();
-            var part2 = result.LastOrDefault();
-            part2.Should().EndWithEquivalentOf("24933642");
+            var program = new ProgramDay7(input);
+            var result = program.RunPartTwo();
+            result.Should().EndWithEquivalentOf(expectedResult);
         }
     }
 }

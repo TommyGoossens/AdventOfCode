@@ -10,12 +10,18 @@ namespace AdventOfCode2022.Day4
         {
         }
 
-        protected override string[] Run()
+        protected override string RunPartOne()
         {
             var splitLines = lines.Select(l => l.Split(new char[] { ',', '-' })).Select(ParseStringsToNumbers);
             var allContainedRows = splitLines.Where(IsContained);
+            return $"Contained pairs: {allContainedRows.Count()}";
+        }
+
+        protected override string RunPartTwo()
+        {
+            var splitLines = lines.Select(l => l.Split(new char[] { ',', '-' })).Select(ParseStringsToNumbers);
             var allOverlappingRows = splitLines.Where(HasOverlap);
-            return new string[] { $"Contained pairs: {allContainedRows.Count()}", $"Pairs with overlap {allOverlappingRows.Count()}" };
+            return $"Pairs with overlap {allOverlappingRows.Count()}";
         }
 
         private bool IsContained((IEnumerable<int> first, IEnumerable<int> second) arg)
@@ -37,22 +43,22 @@ namespace AdventOfCode2022.Day4
             return first.Intersect(second).Any();
         }
 
-        [Fact]
-        public void RunTestsPartOne()
+        [Theory]
+        [InlineData("2-4,6-8\r\n2-3,4-5\r\n5-7,7-9\r\n2-8,3-7\r\n6-6,4-6\r\n2-6,4-8", "2")]
+        public override void RunTestsPartOne(string input, string expectedResult)
         {
-            var program = new ProgramDay4("2-4,6-8\r\n2-3,4-5\r\n5-7,7-9\r\n2-8,3-7\r\n6-6,4-6\r\n2-6,4-8");
-            var result = program.Run();
-            var part1 = result.FirstOrDefault();
-            part1.Should().EndWithEquivalentOf("2");
+            var program = new ProgramDay4(input);
+            var result = program.RunPartOne();
+            result.Should().EndWithEquivalentOf(expectedResult);
         }
 
-        [Fact]
-        public void RunTestsPartTwo()
+        [Theory]
+        [InlineData("2-4,6-8\r\n2-3,4-5\r\n5-7,7-9\r\n2-8,3-7\r\n6-6,4-6\r\n2-6,4-8", "4")]
+        public override void RunTestsPartTwo(string input, string expectedResult)
         {
-            var program = new ProgramDay4("2-4,6-8\r\n2-3,4-5\r\n5-7,7-9\r\n2-8,3-7\r\n6-6,4-6\r\n2-6,4-8");
-            var result = program.Run();
-            var part2 = result.LastOrDefault();
-            part2.Should().EndWithEquivalentOf("4");
+            var program = new ProgramDay4(input);
+            var result = program.RunPartTwo();
+            result.Should().EndWithEquivalentOf(expectedResult);
         }
     }
 }

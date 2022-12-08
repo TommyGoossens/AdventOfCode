@@ -1,6 +1,7 @@
 ﻿using AdventOfCode2022.Day6;
 using AdventOfCodeShared;
 using FluentAssertions;
+using System.IO;
 using System.Text.RegularExpressions;
 using Xunit;
 
@@ -14,15 +15,19 @@ namespace AdventOfCode2022.Day5
             actions = Array.Empty<string>();
         }
 
-        protected override string[] Run()
+        protected override string RunPartOne()
         {
             var endResult1 = PerformMoveActions(GetCurrentStackAsDictionary(), actions, false);
-            var endResult2 = PerformMoveActions(GetCurrentStackAsDictionary(), actions, true);
             var part1 = string.Join("", endResult1.Select(d => d.Value.FirstOrDefault().ToString()));
-            var part2 = string.Join("", endResult2.Select(d => d.Value.FirstOrDefault().ToString()));
-            return new string[] { $"Rearrangement done: {part1}", $"Rearramgement with CrateMover 9001: {part2}" };
+            return $"Rearrangement done: {part1}";
         }
 
+        protected override string RunPartTwo()
+        {
+            var endResult2 = PerformMoveActions(GetCurrentStackAsDictionary(), actions, true);
+            var part2 = string.Join("", endResult2.Select(d => d.Value.FirstOrDefault().ToString()));
+            return $"Rearramgement with CrateMover 9001: {part2}";
+        }
         private Dictionary<int, List<char>> PerformMoveActions(Dictionary<int, List<char>> currentStack, string[] actions, bool canPickupMultipleBoxes)
         {
             foreach (var (amount, source, dest) in actions.Select(ParseMoveStringAsActions))
@@ -97,22 +102,22 @@ namespace AdventOfCode2022.Day5
             return (amount, source, dest);
         }
 
-        [Fact]
-        public void RunTestsPartOne()
+        [Theory]
+        [InlineData("    [D]    \r\n[N] [C]    \r\n[Z] [M] [P]\r\n 1   2   3 \r\n\r\nmove 1 from 2 to 1\r\nmove 3 from 1 to 3\r\nmove 2 from 2 to 1\r\nmove 1 from 1 to 2", "CMZ")]
+        public override void RunTestsPartOne(string input, string expectedResult)
         {
-            var program = new ProgramDay5("    [D]    \r\n[N] [C]    \r\n[Z] [M] [P]\r\n 1   2   3 \r\n\r\nmove 1 from 2 to 1\r\nmove 3 from 1 to 3\r\nmove 2 from 2 to 1\r\nmove 1 from 1 to 2");
-            var result = program.Run();
-            var part1 = result.FirstOrDefault();
-            part1.Should().EndWithEquivalentOf("CMZ");
+            var program = new ProgramDay5(input);
+            var result = program.RunPartOne();
+            result.Should().EndWithEquivalentOf(expectedResult);
         }
 
-        [Fact]
-        public void RunTestsPartTwo()
+        [Theory]
+        [InlineData("    [D]    \r\n[N] [C]    \r\n[Z] [M] [P]\r\n 1   2   3 \r\n\r\nmove 1 from 2 to 1\r\nmove 3 from 1 to 3\r\nmove 2 from 2 to 1\r\nmove 1 from 1 to 2", "MCD")]
+        public override void RunTestsPartTwo(string input, string expectedResult)
         {
-            var program = new ProgramDay5("    [D]    \r\n[N] [C]    \r\n[Z] [M] [P]\r\n 1   2   3 \r\n\r\nmove 1 from 2 to 1\r\nmove 3 from 1 to 3\r\nmove 2 from 2 to 1\r\nmove 1 from 1 to 2");
-            var result = program.Run();
-            var part2 = result.LastOrDefault();
-            part2.Should().EndWithEquivalentOf("MCD");
+            var program = new ProgramDay5(input);
+            var result = program.RunPartTwo();
+            result.Should().EndWithEquivalentOf(expectedResult);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AdventOfCodeShared;
 using System;
+using System.IO;
 
 namespace AdventOfCode2022.Day2
 {
@@ -49,11 +50,16 @@ namespace AdventOfCode2022.Day2
         {
         }
 
-        protected override string[] Run()
+        protected override string RunPartOne()
         {
             var part1 = GetAnswerPart1();
+            return $"Total score is: {part1}";
+        }
+
+        protected override string RunPartTwo()
+        {
             var part2 = GetAnswerPart2();
-            return new string[] { $"Total score is: {part1}", $"Total score is: {part2}" };
+            return $"Total score is: {part2}";
         }
 
         private int GetAnswerPart1()
@@ -114,6 +120,16 @@ namespace AdventOfCode2022.Day2
                 _ => throw new NotImplementedException()
             };
             return playerMoveScore;
+        }
+
+        public override void RunTestsPartOne(string input, string expectedResult)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void RunTestsPartTwo(string input, string expectedResult)
+        {
+            throw new NotImplementedException();
         }
     }
 }

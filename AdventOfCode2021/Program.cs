@@ -16,4 +16,9 @@ foreach (var program in Assembly.GetExecutingAssembly().GetTypes().Where(type =>
     }
 }
 
-foreach (var program in ProgramList.OrderByDescending(p => p.DayNumber)) Console.WriteLine(program.GetAnswer());
+foreach (var program in ProgramList.OrderBy(p => p.DayNumber))
+{
+    Console.WriteLine();
+    program.RunProgramAndDisplayAnswer();
+    Console.WriteLine();
+}

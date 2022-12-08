@@ -8,7 +8,21 @@ namespace AdventOfCode2022.Day1
         {
         }
 
-        protected override string[] Run()
+        protected override string RunPartOne()
+        {
+            var orderedElfList = GetOrderedElfList();
+            var mostCalories = orderedElfList.First(); // Part1
+            return $"Most calories: {mostCalories}.";
+        }
+        
+        protected override string RunPartTwo()
+        {
+            var orderedElfList = GetOrderedElfList();
+            var top3 = orderedElfList.Sum(e => e); // Part 2
+            return $"The sum of the top 3 elfs is: {top3}";
+        }
+
+        private IEnumerable<int> GetOrderedElfList()
         {
             var caloriesPerElf = new List<int>();
             var temp = 0;
@@ -25,9 +39,17 @@ namespace AdventOfCode2022.Day1
 
             var orderedElfList = caloriesPerElf.OrderByDescending(d => d).AsEnumerable();
             orderedElfList = orderedElfList.Take(3);
-            var mostCalories = orderedElfList.First(); // Part1
-            var top3 = orderedElfList.Sum(e => e); // Part 2
-            return new string[] { $"Most calories: {mostCalories}.", $"The sum of the top 3 elfs is: {top3}" };
+            return orderedElfList;
+        }
+
+        public override void RunTestsPartOne(string input, string expectedResult)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void RunTestsPartTwo(string input, string expectedResult)
+        {
+            throw new NotImplementedException();
         }
     }
 }

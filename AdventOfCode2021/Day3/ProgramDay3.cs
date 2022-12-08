@@ -28,11 +28,16 @@ namespace AdventOfCode2021.Day3
         {
         }
 
-        protected override string[] Run()
+        protected override string RunPartOne()
         {
-            var (gamma, epsilon) = SolvePartOne();
+            var (gamma, epsilon) = SolvePartOne();            
+            return $"Gamma ({gamma}) * Epsilon ({epsilon}) = {gamma * epsilon}";
+        }
+
+        protected override string RunPartTwo()
+        {
             var (oxygen, scrubber) = SolvePartTwo();
-            return new string[] { $"Gamma ({gamma}) * Epsilon ({epsilon}) = {gamma * epsilon}", $"Oxygen ({oxygen}) * Scrubber ({scrubber}) = {oxygen * scrubber}" };
+            return $"Oxygen ({oxygen}) * Scrubber ({scrubber}) = {oxygen * scrubber}";
         }
 
         private (int gamma, int epsilon) SolvePartOne()
@@ -69,34 +74,22 @@ namespace AdventOfCode2021.Day3
             return (oxygen, scrubber);
         }
 
-        [Fact]
-        public void RunTestsPartOne()
+        [Theory]
+        [InlineData("00100\r\n11110\r\n10110\r\n10111\r\n10101\r\n01111\r\n00111\r\n11100\r\n10000\r\n11001\r\n00010\r\n01010", "198")]
+        public override void RunTestsPartOne(string input, string expectedResult)
         {
-            var program = new ProgramDay3("00100\r\n11110\r\n10110\r\n10111\r\n10101\r\n01111\r\n00111\r\n11100\r\n10000\r\n11001\r\n00010\r\n01010");
-            var result = program.Run();
-            var part1 = result.FirstOrDefault();
-            part1.Should().EndWithEquivalentOf("198");
+            var program = new ProgramDay3(input);
+            var result = program.RunPartOne();
+            result.Should().EndWithEquivalentOf(expectedResult);
         }
 
-        [Fact]
-        public void RunTestsPartTwo()
+        [Theory]
+        [InlineData("00100\r\n11110\r\n10110\r\n10111\r\n10101\r\n01111\r\n00111\r\n11100\r\n10000\r\n11001\r\n00010\r\n01010", "230")]
+        public override void RunTestsPartTwo(string input, string expectedResult)
         {
-            var program = new ProgramDay3("" +
-                "00100\r\n" +
-                "11110\r\n" +
-                "10110\r\n" +
-                "10111\r\n" +
-                "10101\r\n" +
-                "01111\r\n" +
-                "00111\r\n" +
-                "11100\r\n" +
-                "10000\r\n" +
-                "11001\r\n" +
-                "00010\r\n" +
-                "01010");
-            var result = program.Run();
-            var part2 = result.LastOrDefault();
-            part2.Should().EndWithEquivalentOf("230");
+            var program = new ProgramDay3(input);
+            var result = program.RunPartTwo();
+            result.Should().EndWithEquivalentOf(expectedResult);
         }
     }
 }
