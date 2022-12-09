@@ -1,39 +1,10 @@
 ﻿using AdventOfCodeShared;
+using AdventOfCodeShared.Models;
 using FluentAssertions;
 using Xunit;
 
 namespace AdventOfCode2021.Day5
 {
-
-    public class Point
-    {
-        public int X { get; private init; }
-        public int Y { get; private init; }
-        public Point(string s)
-        {
-            var integers = s.Split(",").Select(int.Parse);
-            X = integers.First();
-            Y = integers.Last();
-        }
-
-    }
-    public class VentLines
-    {
-        private readonly Point from;
-        private readonly Point to;
-
-        public VentLines(string[] s)
-        {
-            this.from = new(s[0]);
-            this.to = new(s[1]);
-        }
-
-        public IEnumerable<Point> GetoverlappingPoints(IEnumerable<VentLines> line)
-        {
-            return new List<Point>();
-        }
-    }
-
     public class ProgramDay5 : AdventOfCodeProgram
     {
         public ProgramDay5(string? text = null) : base(text)
@@ -42,7 +13,7 @@ namespace AdventOfCode2021.Day5
 
         protected override string RunPartOne()
         {
-            var ventLines = lines.Select(l => new VentLines(l.Split(" -> ")));
+            var ventLines = lines.Select(l => new Line(l.Split(" -> ")));
             var overlappingPoints = ventLines.Select(l => l.GetoverlappingPoints(ventLines));
             return "";
         }
