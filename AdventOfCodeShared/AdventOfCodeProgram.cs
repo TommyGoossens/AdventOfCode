@@ -88,7 +88,6 @@ namespace AdventOfCodeShared
             return Math.Max(lengthPartOne, lengthPartTwo);
         }
 
-
         private (string answer, int ms) RunProgram(Func<string> program, int part)
         {
             string answer;
