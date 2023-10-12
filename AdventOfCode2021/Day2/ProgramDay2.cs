@@ -28,7 +28,7 @@ namespace AdventOfCode2021.Day2
             int depth = 0;
             int aim = 0;
 
-            foreach ((string direction, int units) in lines.Select(l => (l.Split(' ')[0], int.Parse(l.Split(' ')[1]))))
+            foreach ((string direction, int units) in Lines.Select(l => (l.Split(' ')[0], int.Parse(l.Split(' ')[1]))))
             {
                 switch (direction)
                 {

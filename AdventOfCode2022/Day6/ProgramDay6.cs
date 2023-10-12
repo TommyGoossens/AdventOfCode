@@ -25,7 +25,7 @@ namespace AdventOfCode2022.Day6
 
         private (int nrOfLettersToProcess, IEnumerable<char> letters) GetResult(int nrOfUniqueLetters)
         {
-            var line = string.Join("", lines);
+            var line = string.Join("", Lines);
             var i = 0;
             while (line.Skip(i).Take(nrOfUniqueLetters).ToHashSet().Count != nrOfUniqueLetters) i++;
             var letters = line.Skip(i).Take(nrOfUniqueLetters);

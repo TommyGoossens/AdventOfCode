@@ -10,7 +10,7 @@ namespace AdventOfCode2022.Day8
         private readonly List<List<double>> linesAsInt;
         public ProgramDay8(string? text = null) : base(text)
         {
-            linesAsInt = lines.Select(l => l.Select(c => char.GetNumericValue(c)).ToList()).ToList();
+            linesAsInt = Lines.Select(l => l.Select(c => char.GetNumericValue(c)).ToList()).ToList();
         }
 
         protected override string RunPartOne()

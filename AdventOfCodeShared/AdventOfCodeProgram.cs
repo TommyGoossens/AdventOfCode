@@ -2,17 +2,19 @@
 
 namespace AdventOfCodeShared
 {
-    public abstract class AdventOfCodeProgram
+    public abstract partial class AdventOfCodeProgram
     {
         public int DayNumber { get; private init; }
-        protected string[] lines { get; private set; }
+        protected string[] Lines { get; private set; }
 
         protected AdventOfCodeProgram(string? text = null)
         {
-            var name = this.GetType().Name;
-            var re = new Regex(@"\d+");
+            var name = GetType().Name;
+            var re = DayNumberRegex();
             DayNumber = int.Parse(re.Match(name).Value);
-            lines = string.IsNullOrEmpty(text) ? File.ReadAllLines(@$"Day{DayNumber}\input.txt") : text.Split(Environment.NewLine);
+            var inputPath = Path.Combine($"Day{DayNumber}", "input.txt");      
+            if(!File.Exists(inputPath)) throw new Exception($"Could not find input.txt for Day {DayNumber}");
+            Lines = string.IsNullOrEmpty(text) ? File.ReadAllLines(inputPath) : text.Split(Environment.NewLine);
         }
 
         protected abstract string RunPartOne();
@@ -38,8 +40,8 @@ namespace AdventOfCodeShared
         {
             var dayString = $" Day {DayNumber} ";
             var middle = maxWidth / 2;
-            var leftSide = (int)Math.Floor((decimal)middle - (dayString.Length / 2));
-            var rightSide = (int)Math.Floor((decimal)middle - (dayString.Length / 2));
+            var leftSide = (int)Math.Floor((decimal)middle - dayString.Length / 2);
+            var rightSide = (int)Math.Floor((decimal)middle - dayString.Length / 2);
             PrintText($"|{new string('-', leftSide)}", ConsoleColor.Blue);
             PrintText(dayString);
             PrintText($"{new string('-', rightSide - 1)}", ConsoleColor.Blue);
@@ -75,7 +77,7 @@ namespace AdventOfCodeShared
             PrintText("|", ConsoleColor.Blue);
             var timeRow = $" Part {part} took: {ms} milliseconds";
             var timeRemainder = maxWidth - timeRow.Length;
-            PrintText($"{timeRow}{new string(' ', timeRemainder)}");
+            PrintText($"{timeRow}{new string(' ', Math.Max(0, timeRemainder))}");
             PrintText($"|{Environment.NewLine}", ConsoleColor.Blue);
         }
 
@@ -102,5 +104,8 @@ namespace AdventOfCodeShared
             var processingTime = DateTime.Now - startTime;
             return (answer, processingTime.Milliseconds);
         }
+
+        [GeneratedRegex("\\d+")]
+        private static partial Regex DayNumberRegex();
     }
 }

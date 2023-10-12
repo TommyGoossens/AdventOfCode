@@ -26,7 +26,7 @@ namespace AdventOfCode2022.Day1
         {
             var caloriesPerElf = new List<int>();
             var temp = 0;
-            foreach (string line in lines)
+            foreach (string line in Lines)
             {
                 if (string.IsNullOrEmpty(line))
                 {

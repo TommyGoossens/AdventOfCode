@@ -26,7 +26,7 @@ namespace AdventOfCode2021.Day1
         {
             int? previousDepth = null;
             int nrOfIncreases = 0;
-            foreach (var line in lines)
+            foreach (var line in Lines)
             {
                 int.TryParse(line, out var currDepth);
                 if (previousDepth == null) { previousDepth = currDepth; continue; }
@@ -41,14 +41,14 @@ namespace AdventOfCode2021.Day1
         {
             int nrOfLargerSums = 0;
             int? previousDepth = null;
-            for (int i = 0; i < lines.Length; i++)
+            for (int i = 0; i < Lines.Length; i++)
             {
                 var sumOfWindow = 0;
                 try
                 {
                     for (int j = 0; j < 3; j++)
                     {
-                        var line = lines[i + j];
+                        var line = Lines[i + j];
                         int.TryParse(line, out var currDepth);
                         sumOfWindow += currDepth;
 

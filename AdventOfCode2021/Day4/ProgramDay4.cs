@@ -56,8 +56,8 @@ namespace AdventOfCode2021.Day4
 
         private (int part1, int part2) PlayBingo()
         {
-            var bingoNumbers = lines.First().Split(',').Select(int.Parse);
-            var boardRows = lines.Skip(1).Where(l => !string.IsNullOrEmpty(l));
+            var bingoNumbers = Lines.First().Split(',').Select(int.Parse);
+            var boardRows = Lines.Skip(1).Where(l => !string.IsNullOrEmpty(l));
             var parsedBoards = boardRows.Select((x, i) => new { Index = i, Value = x }).GroupBy(x => x.Index / 5).Select(x => new Board(x.Select(v => v.Value))).ToList();
             var winningResults = new List<int>();
             foreach (var nr in bingoNumbers)

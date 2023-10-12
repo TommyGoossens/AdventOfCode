@@ -87,7 +87,7 @@ namespace AdventOfCode2022.Day7
             var listOfAllKnownDirectories = new List<Directory>();
             Directory? rootDir = null;
             Directory? currentDir = null;
-            foreach (var l in lines)
+            foreach (var l in Lines)
             {
                 if (l.StartsWith("$ cd") && !l.EndsWith(".."))
                 {

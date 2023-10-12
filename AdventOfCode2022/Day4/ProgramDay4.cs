@@ -12,14 +12,14 @@ namespace AdventOfCode2022.Day4
 
         protected override string RunPartOne()
         {
-            var splitLines = lines.Select(l => l.Split(new char[] { ',', '-' })).Select(ParseStringsToNumbers);
+            var splitLines = Lines.Select(l => l.Split(new char[] { ',', '-' })).Select(ParseStringsToNumbers);
             var allContainedRows = splitLines.Where(IsContained);
             return $"Contained pairs: {allContainedRows.Count()}";
         }
 
         protected override string RunPartTwo()
         {
-            var splitLines = lines.Select(l => l.Split(new char[] { ',', '-' })).Select(ParseStringsToNumbers);
+            var splitLines = Lines.Select(l => l.Split(new char[] { ',', '-' })).Select(ParseStringsToNumbers);
             var allOverlappingRows = splitLines.Where(HasOverlap);
             return $"Pairs with overlap {allOverlappingRows.Count()}";
         }

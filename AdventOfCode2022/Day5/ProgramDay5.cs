@@ -76,9 +76,9 @@ namespace AdventOfCode2022.Day5
         private Dictionary<int, List<char>> GetCurrentStackAsDictionary()
         {
             var cratesDict = new Dictionary<int, List<char>>();
-            var index = lines.ToList().FindIndex(s => s.StartsWith(" 1"));
+            var index = Lines.ToList().FindIndex(s => s.StartsWith(" 1"));
 
-            var stackSection = lines.Take(index + 1);
+            var stackSection = Lines.Take(index + 1);
             var rowWithNumbers = stackSection.Last().Split(" ").Where(s => !string.IsNullOrEmpty(s)).Select(int.Parse);
             var stacks = stackSection.Take(stackSection.Count() - 1);
 
@@ -87,7 +87,7 @@ namespace AdventOfCode2022.Day5
                 var temp = stacks.SelectMany(s => s.Skip((n - 1) * 4).Take(4).Where(c => c != '[' && c != ']' && c != ' '));
                 cratesDict[n] = temp.ToList();
             }
-            actions = lines.Skip(index + 2).ToArray();
+            actions = Lines.Skip(index + 2).ToArray();
             return cratesDict;
         }
 

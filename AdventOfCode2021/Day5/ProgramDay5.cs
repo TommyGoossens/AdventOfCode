@@ -13,7 +13,7 @@ namespace AdventOfCode2021.Day5
 
         protected override string RunPartOne()
         {
-            var ventLines = lines.Select(l => new Line(l.Split(" -> ")));
+            var ventLines = Lines.Select(l => new Line(l.Split(" -> ")));
             var overlappingPoints = ventLines.Select(l => l.GetoverlappingPoints(ventLines));
             return "";
         }

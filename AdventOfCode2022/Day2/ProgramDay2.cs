@@ -65,7 +65,7 @@ namespace AdventOfCode2022.Day2
         private int GetAnswerPart1()
         {
             var totalScore = 0;
-            lines.AsParallel().ForAll(l =>
+            Lines.AsParallel().ForAll(l =>
             {
                 var opponent = l.Split(' ')[0].ParseRpsMove();
                 var player = l.Split(' ')[1].ParseRpsMove();
@@ -83,7 +83,7 @@ namespace AdventOfCode2022.Day2
         private int GetAnswerPart2()
         {
             var totalScore = 0;
-            lines.AsParallel().ForAll(l =>
+            Lines.AsParallel().ForAll(l =>
             {
                 var opponent = l.Split(' ')[0].ParseRpsMove();
                 var strategy = l.Split(' ')[1].ParseStrategyMove();

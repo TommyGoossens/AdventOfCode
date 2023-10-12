@@ -34,7 +34,7 @@ namespace AdventOfCode2022.Day3
         private int GetAnswerPart1()
         {
             var total = 0;
-            lines.AsParallel().ForAll(l =>
+            Lines.AsParallel().ForAll(l =>
             {
                 var firstHalf = l.Substring(0, l.Length / 2);
                 var secondHalf = l.Substring(l.Length / 2);
@@ -48,9 +48,9 @@ namespace AdventOfCode2022.Day3
         {
             var total = 0;
             var i = 0;
-            while ((i * 3) != lines.Length)
+            while ((i * 3) != Lines.Length)
             {
-                var batch = lines.Skip(i * 3).Take(3);
+                var batch = Lines.Skip(i * 3).Take(3);
                 var intersection = batch.Skip(1).Aggregate(new HashSet<char>(batch.First()),
                     (h, e) => { h.IntersectWith(e); return h; }).ToList();
                 total += GetValueOfIntersectedChars(intersection);

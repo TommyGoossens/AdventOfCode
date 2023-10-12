@@ -43,9 +43,9 @@ namespace AdventOfCode2021.Day3
         private (int gamma, int epsilon) SolvePartOne()
         {
             var binaryNumber = "";
-            for (int i = 0; i < lines.First().Length; i++)
+            for (int i = 0; i < Lines.First().Length; i++)
             {
-                var col = lines.Select(l => l[i]).GroupBy(i => i);
+                var col = Lines.Select(l => l[i]).GroupBy(i => i);
                 var mostCommon = col.OrderByDescending(g => g.Count()).First().Key;
                 binaryNumber += $"{mostCommon}";
             }
@@ -60,10 +60,10 @@ namespace AdventOfCode2021.Day3
         {
             var oxygenStr = "";
             var scrubberStr = "";
-            for (int i = 0; i < lines.First().Length; i++)
+            for (int i = 0; i < Lines.First().Length; i++)
             {
-                var colWithMostCommon = lines.Where(l => l.StartsWith(oxygenStr)).Select(l => l[i]).GroupBy(i => i).Select(g => new { nr = g.Key, count = g.Count() });
-                var colWithleastCommon = lines.Where(l => l.StartsWith(scrubberStr)).Select(l => l[i]).GroupBy(i => i).Select(g => new { nr = g.Key, count = g.Count() });
+                var colWithMostCommon = Lines.Where(l => l.StartsWith(oxygenStr)).Select(l => l[i]).GroupBy(i => i).Select(g => new { nr = g.Key, count = g.Count() });
+                var colWithleastCommon = Lines.Where(l => l.StartsWith(scrubberStr)).Select(l => l[i]).GroupBy(i => i).Select(g => new { nr = g.Key, count = g.Count() });
                 var mostCommon = colWithMostCommon.OrderByDescending(g => g.count).ThenByDescending(g => g.nr).First().nr;
                 var leastCommon = colWithleastCommon.OrderBy(g => g.count).ThenBy(g => g.nr).First().nr;
                 oxygenStr += $"{mostCommon}";

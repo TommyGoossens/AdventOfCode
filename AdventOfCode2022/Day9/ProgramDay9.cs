@@ -1,4 +1,5 @@
-﻿using AdventOfCodeShared;
+﻿
+using AdventOfCodeShared;
 using AdventOfCodeShared.Models;
 using FluentAssertions;
 using Xunit;
@@ -12,14 +13,14 @@ namespace AdventOfCode2022.Day9
         protected override string RunPartOne()
         {
             var rope = new Rope(1);
-            foreach ((char direction, int steps) in lines.Select(l => (l[0], int.Parse(l.Split(" ").Last())))) rope.Move(direction, steps);
+            foreach ((char direction, int steps) in Lines.Select(l => (l[0], int.Parse(l.Split(" ").Last())))) rope.Move(direction, steps);
             return $"{rope.Knots[1].Distinct().Count()} positions are visited by the tail";
         }
 
         protected override string RunPartTwo()
         {
             var rope = new Rope(9);
-            foreach ((char direction, int steps) in lines.Select(l => (l[0], int.Parse(l.Split(" ").Last())))) rope.Move(direction, steps);
+            foreach ((char direction, int steps) in Lines.Select(l => (l[0], int.Parse(l.Split(" ").Last())))) rope.Move(direction, steps);
             return $"{rope.Knots[9].Distinct().Count()} positions are visited by the tail";
         }
 
