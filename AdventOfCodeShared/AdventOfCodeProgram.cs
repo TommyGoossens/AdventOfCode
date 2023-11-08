@@ -9,12 +9,18 @@ namespace AdventOfCodeShared
 
         protected AdventOfCodeProgram(string? text = null)
         {
+            if (!string.IsNullOrEmpty(text))
+            {
+                Lines = text.Split(Environment.NewLine);
+                return;
+            }
+
             var name = GetType().Name;
             var re = DayNumberRegex();
             DayNumber = int.Parse(re.Match(name).Value);
-            var inputPath = Path.Combine($"Day{DayNumber}", "input.txt");      
-            if(!File.Exists(inputPath)) throw new Exception($"Could not find input.txt for Day {DayNumber}");
-            Lines = string.IsNullOrEmpty(text) ? File.ReadAllLines(inputPath) : text.Split(Environment.NewLine);
+            var inputPath = Path.Combine($"Day{DayNumber}", "input.txt");
+            if (!File.Exists(inputPath)) throw new Exception($"Could not find input.txt for Day {DayNumber}");
+            Lines = File.ReadAllLines(inputPath);
         }
 
         protected abstract string RunPartOne();
