@@ -1,6 +1,5 @@
 ﻿using AdventOfCodeShared;
 using FluentAssertions;
-using System.ComponentModel.DataAnnotations;
 using Xunit;
 
 namespace AdventOfCode2022.Day8
@@ -67,7 +66,7 @@ namespace AdventOfCode2022.Day8
                     var currentTree = linesAsInt[r][c];
 
                     var treesInColAbove = linesAsInt.Take(r).Select(l => l[c]);
-                    var treesAreLowerAbove = !treesInColAbove.Any(t => t>=currentTree);
+                    var treesAreLowerAbove = !treesInColAbove.Any(t => t >= currentTree);
 
                     var treesInColBelow = linesAsInt.Skip(r + 1).Select(l => l[c]);
                     var treesAreLowerBelow = !treesInColBelow.Any(t => t >= currentTree);

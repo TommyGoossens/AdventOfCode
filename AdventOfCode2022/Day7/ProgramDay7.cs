@@ -59,7 +59,7 @@ namespace AdventOfCode2022.Day7
     {
         public ProgramDay7(string? text = null) : base(text)
         {
-        }        
+        }
         protected override string RunPartTwo()
         {
             var listOfAllKnownDirectories = GetListOfAllKnownDirectories();
@@ -72,6 +72,7 @@ namespace AdventOfCode2022.Day7
             var part2 = dirsWithMatchingSize.Select(d => d.GetTotalSizeOfFiles()).OrderBy(d => d).First();
             return $"Size of dir to delete: {part2}";
         }
+
         protected override string RunPartOne()
         {
             var listOfAllKnownDirectories = GetListOfAllKnownDirectories();

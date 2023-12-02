@@ -1,26 +1,22 @@
-﻿using System.Text.RegularExpressions;
+﻿using AdventOfCodeShared.RegularExpressions;
 
 namespace AdventOfCodeShared
 {
-    public abstract partial class AdventOfCodeProgram
+    public abstract class AdventOfCodeProgram
     {
         public int DayNumber { get; private init; }
-        protected string[] Lines { get; private set; }
+        protected string[] Lines { get; private init; } 
 
         protected AdventOfCodeProgram(string? text = null)
         {
-            if (!string.IsNullOrEmpty(text))
+            DayNumber = GetDayNumber();
+            if (!string.IsNullOrEmpty(text)) Lines = text.Replace("\r", "").Split(Environment.NewLine);
+            else
             {
-                Lines = text.Split(Environment.NewLine);
-                return;
+                var inputPath = Path.Combine($"Day{DayNumber}", "input.txt");
+                if (!File.Exists(inputPath)) throw new Exception($"Could not find input.txt for Day {DayNumber}");
+                Lines = File.ReadAllLines(inputPath);
             }
-
-            var name = GetType().Name;
-            var re = DayNumberRegex();
-            DayNumber = int.Parse(re.Match(name).Value);
-            var inputPath = Path.Combine($"Day{DayNumber}", "input.txt");
-            if (!File.Exists(inputPath)) throw new Exception($"Could not find input.txt for Day {DayNumber}");
-            Lines = File.ReadAllLines(inputPath);
         }
 
         protected abstract string RunPartOne();
@@ -40,6 +36,13 @@ namespace AdventOfCodeShared
             PrintDivider(maxWidth);
             PrintResultMessageForPart(partTwo, 2, maxWidth);
             PrintDivider(maxWidth);
+        }
+
+        private int GetDayNumber()
+        {
+            var className = GetType().Name;
+            var re = DigitRegularExpressions.DayNumberRegex();
+            return int.Parse(re.Match(className).Value);
         }
 
         private void PrintTitle(int maxWidth)
@@ -108,9 +111,6 @@ namespace AdventOfCodeShared
             }
             var processingTime = DateTime.Now - startTime;
             return (answer, processingTime.Milliseconds);
-        }
-
-        [GeneratedRegex("\\d+")]
-        private static partial Regex DayNumberRegex();
+        }        
     }
 }

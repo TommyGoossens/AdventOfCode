@@ -3,6 +3,9 @@
 ################################################################################
 
 /.vs
+.DS_Store
 /AdventOfCode2022/Day1/advent_of_code_1_input_large.txt
-**/bin
-**/obj
+bin/
+obj/
+
+.fake

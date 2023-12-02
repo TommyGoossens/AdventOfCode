@@ -6,7 +6,7 @@ namespace AdventOfCode2022.Day3
 {
     public class ProgramDay3 : AdventOfCodeProgram
     {
-        private Dictionary<char, int> letterValues;
+        private readonly Dictionary<char, int> letterValues;
 
         public ProgramDay3(string? text = null) : base(text)
         {
@@ -36,8 +36,8 @@ namespace AdventOfCode2022.Day3
             var total = 0;
             Lines.AsParallel().ForAll(l =>
             {
-                var firstHalf = l.Substring(0, l.Length / 2);
-                var secondHalf = l.Substring(l.Length / 2);
+                var firstHalf = l[..(l.Length / 2)];
+                var secondHalf = l[(l.Length / 2)..];
                 var itemsInBoth = firstHalf.Intersect(secondHalf);
                 Interlocked.Add(ref total, GetValueOfIntersectedChars(itemsInBoth));
             });
@@ -60,7 +60,7 @@ namespace AdventOfCode2022.Day3
             return total;
         }
 
-        private int GetValueOfIntersectedChars(IEnumerable<char> chars) => chars.Select(c => letterValues[c]).Sum();
+        private int GetValueOfIntersectedChars(IEnumerable<char> chars) => chars.Where(c => letterValues.TryGetValue(c, out var _)).Select(c => letterValues[c]).Sum();
 
         [Theory]
         [InlineData("vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw", "157")]
