@@ -4,15 +4,12 @@ using AdventOfCodeShared.Models;
 
 namespace AdventOfCode2023.Day3
 {
-
     public class Part : Line
     {
-        public static int Id { get; private set; } = 0;
         public int PartValue { get; private init; }
         public Part(Point from, Point to, int value) : base(from, to)
         {
             PartValue = value;
-            Id++;
         }
     }
 
@@ -42,19 +39,23 @@ namespace AdventOfCode2023.Day3
 
         protected override string RunPartOne()
         {
-            var parts = Lines
-            .Select((l, i) => (l, i))
-            .SelectMany(GetIndicesOfDigits)
-            .Where(IsAdjacentToSymbol)
-            .Select(GetPartNumber);
-            return parts.Sum(p => p.PartNumber).ToString();
+            var partsCoordinates = Lines.SelectMany(CreatePartCoordinates);
+            var symbols = Lines.SelectMany(CreateSymbolCoordinates);
+            var sum = partsCoordinates.Where(p => IsAdjacentToSymbol(p, symbols)).Sum(p => p.PartValue);
+            return sum.ToString();
         }
 
+        protected override string RunPartTwo()
+        {
+            var getGearCoordinates = Lines.SelectMany(CreateGearCoordinates);
+            var partsCoordinates = Lines.SelectMany(CreatePartCoordinates);
+            var pairs = getGearCoordinates.Select(g => FindPartPairs(g, partsCoordinates)).Distinct();
+            return pairs.Where(p => p != null).Distinct().Sum(p => p!.Value.FirstPart * p.Value.SecondPart).ToString();
+        }
 
         private IEnumerable<Point> CreateGearCoordinates(string line, int index)
         {
-            return Regex.Matches(line, @"\*")
-            .Select(m => new Point(m.Index, index));
+            return Regex.Matches(line, @"\*").Select(m => new Point(m.Index, index));
         }
 
         private IEnumerable<Part> CreatePartCoordinates(string line, int rowIndex)
@@ -62,12 +63,16 @@ namespace AdventOfCode2023.Day3
             return Regex.Matches(line, @"\d+").Select(m =>
             new Part(new(m.Index, rowIndex), new(m.Index + m.Length - 1, rowIndex), int.Parse(m.Value)));
         }
-        protected override string RunPartTwo()
+
+        private IEnumerable<Point> CreateSymbolCoordinates(string line, int rowIndex)
         {
-            var getGearCoordinates = Lines.SelectMany(CreateGearCoordinates);
-            var partsCoordinates = Lines.SelectMany(CreatePartCoordinates);
-            var pairs = getGearCoordinates.Select(g => FindPartPairs(g, partsCoordinates)).Distinct();
-            return pairs.Where(p => p != null).Distinct().Sum(p => p!.Value.FirstPart * p.Value.SecondPart).ToString();
+            return Regex.Matches(line, @"[^.\d]").Select(m => new Point(m.Index, rowIndex));
+        }
+
+        private bool IsAdjacentToSymbol(Part part, IEnumerable<Point> symbolCoordinates)
+        {
+            var searchArea = new Rectangle(new(part.From.X - 1, part.From.Y - 1), new(part.To.X + 1, part.To.Y + 1));
+            return symbolCoordinates.Any(searchArea.PointIsWithinBorder);
         }
 
         private (int FirstPart, int SecondPart)? FindPartPairs(Point gear, IEnumerable<Part> partsCoordinates)
@@ -80,50 +85,6 @@ namespace AdventOfCode2023.Day3
                 return (partsAroundCoordinates.First().PartValue, partsAroundCoordinates.Last().PartValue);
             }
             return null;
-
-        }
-
-        private (int PartNumber, int Line) GetPartNumber((int LineNumber, int StartIndex, int Length) tuple, int arg2)
-        {
-            var (lineNumber, index, length) = tuple;
-            var currentLine = Lines[lineNumber];
-            var digitString = currentLine.Substring(index, length);
-            return (int.Parse(digitString), lineNumber);
-        }
-
-        private bool IsAdjacentToSymbol((int LineNumber, int StartIndex, int Length) tuple)
-        {
-            var (lineNumber, index, length) = tuple;
-            var currentLine = Lines[lineNumber];
-            var minCharIndex = Math.Max(0, index - 1);
-            var maxCharIndex = index + length >= currentLine.Length ? currentLine.Length - 1 : index + length;
-            var currentNumber = GetPartNumber(tuple, 0);
-            var maxLength = Math.Min(length + 2, currentLine.Length - minCharIndex);
-            var prevLine = Lines[Math.Max(0, lineNumber - 1)];
-            var prevLineLimited = prevLine.Substring(minCharIndex, maxLength);
-            var prevLineContainsSymbol = prevLineLimited.Select(IsSymbol).Any(b => b == true);
-
-            var nextLine = Lines[Math.Min(Lines.Length - 1, lineNumber + 1)];
-            var nextLineLimited = nextLine.Substring(minCharIndex, maxLength);
-            var nextLineContainsSymbol = nextLineLimited.Select(IsSymbol).Any(b => b == true);
-
-            char prevChar = currentLine[minCharIndex], nextChar = currentLine[maxCharIndex];
-            var currentLineContainsSybol = IsSymbol(prevChar) || IsSymbol(nextChar);
-            if (prevLineContainsSymbol || currentLineContainsSybol || nextLineContainsSymbol) return true;
-            return false;
-        }
-
-        private bool IsSymbol(char v)
-        {
-            if (Regex.Match(v.ToString(), @"\d").Success || v == '.') return false;
-            return true;
-        }
-
-        private IEnumerable<(int LineNumber, int StartIndex, int Length)> GetIndicesOfDigits((string l, int i) tuple)
-        {
-            var (line, rowIndex) = tuple;
-            var matches = Regex.Matches(line, @"\d+");
-            return matches.Select(m => (rowIndex, m.Index, m.Length));
         }
     }
 }

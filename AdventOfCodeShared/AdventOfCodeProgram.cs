@@ -29,7 +29,7 @@ namespace AdventOfCodeShared
         {
             var partOne = RunProgram(RunPartOne, 1);
             var partTwo = RunProgram(RunPartTwo, 2);
-            var maxWidth = GetMaxWidth(partOne.answer, partTwo.answer);
+            var maxWidth = GetMaxWidth(partOne, partTwo);
 
             PrintTitle(maxWidth);
             PrintResultMessageForPart(partOne, 1, maxWidth);
@@ -90,11 +90,17 @@ namespace AdventOfCodeShared
             PrintText($"|{Environment.NewLine}", ConsoleColor.Blue);
         }
 
-        private static int GetMaxWidth(string partOne, string partTwo)
+        private static int GetMaxWidth((string answer, int ms) partOne, (string answer, int ms) partTwo)
         {
-            var lengthPartOne = partOne.Split(Environment.NewLine).FirstOrDefault()?.Length ?? 0;
-            var lengthPartTwo = partTwo.Split(Environment.NewLine).FirstOrDefault()?.Length ?? 0;
-            return Math.Max(lengthPartOne, lengthPartTwo);
+            var (answer1, time1) = partOne;
+            var (answer2, time2) = partTwo;
+            var lengthPartOne = answer1.Split(Environment.NewLine).FirstOrDefault()?.Length ?? answer1.Length;
+            var timeRow1 = $" Part 1 took: {time1} milliseconds";
+            var lengthPartTwo = answer2.Split(Environment.NewLine).FirstOrDefault()?.Length ?? answer2.Length;
+            var timeRow2 = $" Part 2 took: {time2} milliseconds";
+            var maxAnswerRow = Math.Max(lengthPartOne, lengthPartTwo);
+            var maxTimeRow = Math.Max(timeRow1.Length, timeRow2.Length);
+            return Math.Max(maxAnswerRow, maxTimeRow);
         }
 
         private (string answer, int ms) RunProgram(Func<string> program, int part)
