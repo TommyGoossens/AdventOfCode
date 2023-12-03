@@ -5,7 +5,7 @@ namespace AdventOfCodeShared
     public abstract class AdventOfCodeProgram
     {
         public int DayNumber { get; private init; }
-        protected string[] Lines { get; private init; } 
+        protected string[] Lines { get; private init; }
 
         protected AdventOfCodeProgram(string? text = null)
         {
@@ -105,12 +105,13 @@ namespace AdventOfCodeShared
             {
                 answer = $" Part {part}: {program()} ";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 answer = $" Part {part} has not yet been coded ";
             }
             var processingTime = DateTime.Now - startTime;
             return (answer, processingTime.Milliseconds);
-        }        
+        }
     }
 }
