@@ -4,11 +4,24 @@ using AdventOfCodeShared.Models;
 
 namespace AdventOfCode2023.Day3
 {
+
+    public class Part : Line
+    {
+        public static int Id { get; private set; } = 0;
+        public int PartValue { get; private init; }
+        public Part(Point from, Point to, int value) : base(from, to)
+        {
+            PartValue = value;
+            Id++;
+        }
+    }
+
     public class ProgramDay3 : AdventOfCodeProgram
     {
         public ProgramDay3(string? text = null) : base(text)
         {
         }
+
         [Theory]
         [InlineData("467..114..\n...*......\n..35..633.\n......#...\n617*......\n.....+.58.\n..592.....\n......755.\n...$.*....\n.664.598.*\n.......100", "4461")]
         public override void RunTestsPartOne(string input, string expectedResult)
@@ -19,7 +32,7 @@ namespace AdventOfCode2023.Day3
         }
 
         [Theory]
-        [InlineData("467..114..\n...*......\n..35..633.\n......#...\n617*......\n.....+.58.\n..592.....\n......755.\n...$.*....\n.664.598.*\n.......100", "467835")]
+        [InlineData("467..114..\n...*......\n..35..633.\n......#...\n617 * ......\n.....+.58.\n..592.....\n......755.\n...$.*....\n.664.598..", "467835")]
         public override void RunTestsPartTwo(string input, string expectedResult)
         {
             var program = new ProgramDay3(input);
@@ -40,29 +53,35 @@ namespace AdventOfCode2023.Day3
 
         private IEnumerable<Point> CreateGearCoordinates(string line, int index)
         {
-            return Regex.Matches(line, "/*")
+            return Regex.Matches(line, @"\*")
             .Select(m => new Point(m.Index, index));
         }
 
-
-
+        private IEnumerable<Part> CreatePartCoordinates(string line, int rowIndex)
+        {
+            return Regex.Matches(line, @"\d+").Select(m =>
+            new Part(new(m.Index, rowIndex), new(m.Index + m.Length - 1, rowIndex), int.Parse(m.Value)));
+        }
         protected override string RunPartTwo()
         {
-
-            IEnumerable<Point> getGearCoordinates = Lines
-            .SelectMany(CreateGearCoordinates);
-
-
-
-            var parts = Lines
-            .Select((l, i) => (l, i))
-            .SelectMany(GetIndicesOfDigits)
-            .Where(IsAdjacentToSymbol)
-            .Select(GetPartNumber);
-            return parts.Sum(p => p.PartNumber).ToString();
+            var getGearCoordinates = Lines.SelectMany(CreateGearCoordinates);
+            var partsCoordinates = Lines.SelectMany(CreatePartCoordinates);
+            var pairs = getGearCoordinates.Select(g => FindPartPairs(g, partsCoordinates)).Distinct();
+            return pairs.Where(p => p != null).Distinct().Sum(p => p!.Value.FirstPart * p.Value.SecondPart).ToString();
         }
 
+        private (int FirstPart, int SecondPart)? FindPartPairs(Point gear, IEnumerable<Part> partsCoordinates)
+        {
+            var topLeftPoint = new Point(gear.X - 1, gear.Y - 1);
+            var searchArea = new Rectangle(topLeftPoint, 2, 2);
+            var partsAroundCoordinates = partsCoordinates.Where(p => searchArea.CoordinatesAreWithinRectangle(p));
+            if (partsAroundCoordinates.Count() == 2)
+            {
+                return (partsAroundCoordinates.First().PartValue, partsAroundCoordinates.Last().PartValue);
+            }
+            return null;
 
+        }
 
         private (int PartNumber, int Line) GetPartNumber((int LineNumber, int StartIndex, int Length) tuple, int arg2)
         {

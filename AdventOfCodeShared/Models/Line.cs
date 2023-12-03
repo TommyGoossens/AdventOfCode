@@ -2,13 +2,19 @@
 {
     public class Line
     {
-        private readonly Point from;
-        private readonly Point to;
+        public Point From { get; private init; }
+        public Point To { get; private init; }
 
         public Line(string[] s)
         {
-            this.from = new(s[0]);
-            this.to = new(s[1]);
+            this.From = new(s[0]);
+            this.To = new(s[1]);
+        }
+
+        public Line(Point from, Point to)
+        {
+            From = from;
+            To = to;
         }
 
         public IEnumerable<Point> GetoverlappingPoints(IEnumerable<Line> lines)
