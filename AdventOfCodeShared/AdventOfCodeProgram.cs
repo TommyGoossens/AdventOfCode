@@ -13,7 +13,7 @@ namespace AdventOfCodeShared
             if (!string.IsNullOrEmpty(text)) Lines = text.Replace("\r", "").Split(Environment.NewLine);
             else
             {
-                var inputPath = Path.Combine($"Day{DayNumber}", "input.txt");
+                var inputPath = Path.Combine($"Day{DayNumber}", "Input.txt");
                 if (!File.Exists(inputPath)) throw new Exception($"Could not find input.txt for Day {DayNumber}");
                 Lines = File.ReadAllLines(inputPath);
             }
