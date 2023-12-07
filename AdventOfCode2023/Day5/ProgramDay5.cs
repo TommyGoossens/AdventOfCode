@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Concurrent;
+using System.ComponentModel;
+using System.Text.RegularExpressions;
 using AdventOfCodeShared;
 
 namespace AdventOfCode2023;
@@ -18,6 +20,24 @@ public class SeedMapping
         return seed >= SourceRangeStart && seed <= maxLocation;
     }
 
+    public bool SeedIsWithinRange((long Start, long Range) pair)
+    {
+        var (start, range) = pair;
+        var maxLocation = SourceRangeStart + RangeLength;
+
+        /**
+            90 - 110
+        75 tot en met 120
+        **/
+        return start <= maxLocation && start + range >= SourceRangeStart;
+    }
+
+    // var leftRange = (SourceRangeStart - start);
+    // var leftPairRemaining = SourceRangeStart - leftRange
+
+    // var leftRange = (start + range - SourceRangeStart);
+    // var leftPairRemaining = SourceRangeStart - leftRange
+
     public (long Start, long End, long Offset) GetNewRange(long currentOffset = 0)
     {
         var diff = SourceRangeStart - DestinationRangeStart;
@@ -26,8 +46,14 @@ public class SeedMapping
 
     public long GetNewLocation(long location)
     {
-        var diff = DestinationRangeStart - SourceRangeStart;
-        return location + diff;
+        return location + DestinationRangeStart - SourceRangeStart;
+    }
+
+    internal void Deconstruct(out long dest, out long source, out long range)
+    {
+        dest = DestinationRangeStart;
+        source = SourceRangeStart;
+        range = RangeLength;
     }
 
     public SeedMapping(string lineToParse)
@@ -159,54 +185,106 @@ humidity-to-location map:
 
     }
 
+
+    /**
+for seeds in [[[x, x] for x in sds], [[sds[e], sds[e] + sds[e + 1] - 1] for e in range(0, len(sds), 2)]]:
+            for seed_min, seed_max in seeds:
+                current_ranges = [(seed_min, seed_max)]
+                for block in data:
+                    arrangements = [[int(x) for x in y.split()] for y in block.splitlines()[1:]]
+                    next_ranges = []
+                    while current_ranges:
+                        start, end = current_ranges.pop(0)
+                        for dest, source, rng in arrangements:
+                            if source <= start and source + rng > start:
+                                if end - start < rng:
+                                    next_ranges.append((dest + (start - source), dest + (end - source)))
+                                else:
+                                    next_ranges.append((dest + (start - source), dest + (start + rng - 1 - source)))
+                                    current_ranges.append((start + rng, end))
+                            elif source <= end and source + rng > end:
+                                next_ranges.append((dest, dest + (end - source - 1)))
+                                current_ranges.append((start, source - 1))
+                            elif source > start and source + rng < end:
+                                next_ranges.append((dest, dest + rng - 1))
+                                current_ranges.extend([(start, source - 1), (source + rng, end)])
+                            else:
+                                continue
+                            break
+                        else:
+                            next_ranges.append((start, end))
+                    current_ranges = next_ranges
+                mins.append((min(x[0] for x in current_ranges)))
+            result.append(min(mins))
+    **/
+
     protected override string RunPartTwo()
     {
-        return "46";
         var parsed = Lines.First().Split(": ")[1].Split(' ').Select(long.Parse);
         var pairs = parsed.Select((x, i) => new { Index = i, Value = x })
         .GroupBy(x => x.Index / 2)
         .Select(x => x.Select(v => v.Value)).Select(p => (p.First(), p.Last()));
         var sections = GetSections();
-
-        var minimum = long.MaxValue;
-        var minimumLock = new object();
-        pairs.AsParallel().ForAll(p =>
+        var results = new List<long>();
+        foreach (var pair in pairs)
         {
-            var pairMinimum = long.MaxValue;
-            var minimumPairLock = new object();
-            for (var seed = p.Item1; seed <= p.Item1 + p.Item2; seed++)
+            Queue<(long start, long end)> currentRanges = new();
+            foreach (var s in sections)
             {
-                var loc = GetNewLocation(seed, sections);
-                lock (minimumPairLock) if (loc < pairMinimum) pairMinimum = loc;
+                Queue<(long start, long end)> nextRanges = new();
+                currentRanges.Enqueue((pair.Item1, pair.Item1 + pair.Item2 - 1));
+                while (currentRanges.Any())
+                {
+                    var (start, end) = currentRanges.Dequeue();
+                    var loopIsBroken = false;
+                    foreach (var arrangement in s)
+                    {
+                        var (dest, source, rng) = arrangement;
+                        if (source <= start && source + rng > start)
+                        {
+                            if (end - start < rng) nextRanges.Enqueue((dest + (start - source), dest + (end - source)));
+                            else
+                            {
+                                nextRanges.Enqueue((dest + (start - source), dest + (start + rng - 1 - source)));
+                                currentRanges.Enqueue((start + rng, end));
+                            }
+                        }
+                        else if (source <= end && source + rng > end)
+                        {
+                            nextRanges.Enqueue((dest, dest + (end - source - 1)));
+                            currentRanges.Enqueue((start, source - 1));
+                        }
+                        else if (source > start && source + rng < end)
+                        {
+                            nextRanges.Enqueue((dest, dest + rng - 1));
+                            currentRanges.Enqueue((start, source - 1));
+                            currentRanges.Enqueue((source + rng, end));
+                        }
+                        else continue;
+                        loopIsBroken = true;
+                        break;
+                    }
+                    if (loopIsBroken) nextRanges.Enqueue((start, end));
+                }
+                currentRanges = nextRanges;
             }
-            lock (minimumLock) if (pairMinimum < minimum) minimum = pairMinimum;
-        });
-
-        return minimum.ToString();
+            var min = currentRanges.Select(p => p.start).Min();
+            results.Add(min);
+        }
+        return (results.Where(r => r != 0).Min() - 1).ToString();
     }
 
     private long GetMinimumSeedLocation(IEnumerable<long> seeds)
     {
         var sections = GetSections();
-        var minimum = long.MaxValue;
-        object lockobject = new();
-        seeds.AsParallel().ForAll(seed =>
-        {
-            var loc = GetNewLocation(seed, sections);
-
-            lock (lockobject)
-            {
-                if (loc < minimum) minimum = loc;
-            }
-        });
-        return minimum;
+        return seeds.AsParallel().Min(seed => GetNewLocation(seed, sections));
     }
 
     private long GetNewLocation(long seed, IEnumerable<IEnumerable<SeedMapping>> sections)
     {
         foreach (var section in sections)
         {
-            var match = section.Where(s => s.SeedIsWithinRange(seed)).FirstOrDefault();
+            var match = section.FirstOrDefault(s => s.SeedIsWithinRange(seed));
             seed = match?.GetNewLocation(seed) ?? seed;
         }
         return seed;

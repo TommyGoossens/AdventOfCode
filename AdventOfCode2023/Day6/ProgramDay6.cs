@@ -14,23 +14,16 @@ public class Race
     public long Distance { get; private init; }
     public long GetNumberOfWaysToWin()
     {
-        var multiplier = 0;
         long nrOfWaysToWin = 0;
-        for (int ms = 0; ms <= Time; ms++)
+        for (var ms = 0; ms <= Time; ms++)
         {
-            var timeRemaining = Time - ms;
-            if (ms + timeRemaining > Time) break;
-            var distanceMoved = timeRemaining * multiplier;
-            if (distanceMoved > Distance) nrOfWaysToWin++;
-            else
-            {
-                var halfTimePassed = ms >= Time / 2;
-                if (halfTimePassed) break;
-            }
-            multiplier++;
+            if ((Time - ms) * ms > Distance) nrOfWaysToWin++;
+            else if (RaceIsOverHalftime(ms)) return nrOfWaysToWin;
         }
         return nrOfWaysToWin;
     }
+
+    private bool RaceIsOverHalftime(int elapsedTime) => elapsedTime >= Time / 2;
 }
 
 public class ProgramDay6 : AdventOfCodeProgram
@@ -70,11 +63,16 @@ Distance:  9  40  200", "71503")]
 
     protected override string RunPartTwo()
     {
+        var startTimeParsing = DateTime.Now;
         var timeString = string.Join("", Lines[0].Split(" ").Where(s => int.TryParse(s, out _)));
         var distanceString = string.Join("", Lines[1].Split(" ").Where(s => int.TryParse(s, out _)));
         var time = long.Parse(timeString);
         var distance = long.Parse(distanceString);
         var race = new Race(time, distance);
-        return race.GetNumberOfWaysToWin().ToString();
+        Console.WriteLine($"Parsing took {(DateTime.Now - startTimeParsing).Milliseconds}");
+        var startTimeRace = DateTime.Now;
+        var wins = race.GetNumberOfWaysToWin();
+        Console.WriteLine($"Race took {(DateTime.Now - startTimeRace).Milliseconds}");
+        return wins.ToString();
     }
 }
