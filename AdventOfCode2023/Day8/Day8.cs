@@ -21,39 +21,41 @@ public class MapTraverser
         }
     }
 
-    public int TraverseToAndCountSteps(string startRegex, string desinationSuffix, IEnumerable<char> instuctionSet)
+    public long TraverseToAndCountSteps(string startRegex, string desinationSuffix, IEnumerable<char> instuctionSet)
     {
-        var steps = 0;
         var startingNodeKeys = map.Where(m => Regex.Match(m.Key, startRegex).Success).Select(k => k.Key);
+        var runners = map.Where(m => startingNodeKeys.Contains(m.Key)).Select(n => n.Value);
+        var result = new List<long>();
 
-        Console.WriteLine($"Starting nodes are: {string.Join(" - ", startingNodeKeys)}");
-
-        var runners = map.Where(m => startingNodeKeys.Contains(m.Key)).Select((n) => (n.Value, n.Key)).ToArray();
-
-        while (runners.Select(g => g.Key).Any(g => !g.EndsWith(desinationSuffix)) && steps < int.MaxValue)
+        foreach (var startNode in runners)
         {
-            foreach (var instuction in instuctionSet)
-            {
-                steps++;
-                for (var i = 0; i < runners.Length; i++)
-                {
-                    var (node, _) = runners[i];
-                    var nextNode = instuction switch
-                    {
-                        'L' => node.Left,
-                        'R' => node.Right,
-                        _ => throw new NotImplementedException(),
-                    };
-                    runners[i].Value = map[nextNode];
-                    runners[i].Key = nextNode;
-                }
-            }
+            var steps = 0;
+            var currentNode = startNode;
+            while (!DestinationReached(instuctionSet, ref currentNode, desinationSuffix, ref steps)) ;
+            result.Add(steps);
         }
-        return steps;
+        return result.Aggregate(CalculateLeastCommonMultiple);
     }
 
+    private static long CalculateLeastCommonMultiple(long a, long b) => Math.Abs(a * b) / GCD(a, b);
+
+    private static long GCD(long a, long b) => b == 0 ? a : GCD(b, a % b);
+
+    private bool DestinationReached(IEnumerable<char> instuctionSet, ref (string Left, string Right) currentNode, string desinationSuffix, ref int steps)
+    {
+        foreach (var instuction in instuctionSet)
+        {
+            steps++;
+            var nextNode = instuction == 'L' ? currentNode.Left : currentNode.Right;
+            if (nextNode.EndsWith(desinationSuffix)) return true;
+            currentNode = map[nextNode];
+        }
+        return false;
+    }
 
 }
+
+
 
 public class Day8 : AdventOfCodeProgram
 {
