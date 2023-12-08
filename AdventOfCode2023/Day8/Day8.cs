@@ -3,7 +3,6 @@ using AdventOfCodeShared;
 
 namespace AdventOfCode2023;
 
-
 public class MapTraverser
 {
     private readonly Dictionary<string, (string Left, string Right)> map = new();
@@ -51,9 +50,6 @@ public class MapTraverser
     private static long CalculateLeastCommonMultiple(long a, long b) => Math.Abs(a * b) / GCD(a, b);
 
     private static long GCD(long a, long b) => b == 0 ? a : GCD(b, a % b);
-
-
-
 }
 
 public class Day8 : AdventOfCodeProgram
