@@ -31,17 +31,13 @@ public class MapTraverser
         {
             var steps = 0;
             var currentNode = startNode;
-            while (!DestinationReached(instuctionSet, ref currentNode, desinationSuffix, ref steps)) ;
+            while (!DestinationReached(instuctionSet, desinationSuffix, ref currentNode, ref steps)) ;
             result.Add(steps);
         }
         return result.Aggregate(CalculateLeastCommonMultiple);
     }
 
-    private static long CalculateLeastCommonMultiple(long a, long b) => Math.Abs(a * b) / GCD(a, b);
-
-    private static long GCD(long a, long b) => b == 0 ? a : GCD(b, a % b);
-
-    private bool DestinationReached(IEnumerable<char> instuctionSet, ref (string Left, string Right) currentNode, string desinationSuffix, ref int steps)
+    private bool DestinationReached(IEnumerable<char> instuctionSet, string desinationSuffix, ref (string Left, string Right) currentNode, ref int steps)
     {
         foreach (var instuction in instuctionSet)
         {
@@ -52,10 +48,13 @@ public class MapTraverser
         }
         return false;
     }
+    private static long CalculateLeastCommonMultiple(long a, long b) => Math.Abs(a * b) / GCD(a, b);
+
+    private static long GCD(long a, long b) => b == 0 ? a : GCD(b, a % b);
+
+
 
 }
-
-
 
 public class Day8 : AdventOfCodeProgram
 {
