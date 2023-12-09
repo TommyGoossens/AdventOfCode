@@ -99,7 +99,7 @@ public class Day8 : AdventOfCodeProgram
 
     protected override string RunPartOne()
     {
-        var instuctionSet = Lines[0].Select(c => c);
+        var instuctionSet = Lines.First().Select(c => c);
         var map = new MapTraverser(Lines.Skip(2));
         var steps = map.TraverseToAndCountSteps(@"[A]{3}", "Z", instuctionSet);
         return steps.ToString();
@@ -107,7 +107,7 @@ public class Day8 : AdventOfCodeProgram
 
     protected override string RunPartTwo()
     {
-        var instuctionSet = Lines[0].Select(c => c);
+        var instuctionSet = Lines.First().Select(c => c);
         var map = new MapTraverser(Lines.Skip(2));
         var steps = map.TraverseToAndCountSteps(@"(\d{2}|[A-Z]{2})[A]{1}", "Z", instuctionSet);
         return steps.ToString();

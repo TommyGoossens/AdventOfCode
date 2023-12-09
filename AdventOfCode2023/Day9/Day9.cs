@@ -14,7 +14,7 @@ internal class HistorySection
     public HistorySection(HistorySection previous)
     {
         var prevNumbers = previous.numbers;
-        numbers = prevNumbers.Take(prevNumbers.Count() - 1)
+        numbers = prevNumbers.Take(prevNumbers.Count - 1)
         .Select((n, i) => prevNumbers.ElementAt(i + 1) - n).ToList();
     }
 
@@ -36,25 +36,25 @@ internal class History
     {
         var numbers = line.ExtractNumbers<long>();
         if (reversed) numbers = numbers.Reverse();
-        Sections.Add(new HistorySection(numbers));
-        while (!Sections.Last().ContainsOnlyZeros()) Sections.Add(new HistorySection(Sections.Last()));
+        sections.Add(new HistorySection(numbers));
+        while (!sections.Last().ContainsOnlyZeros()) sections.Add(new HistorySection(sections.Last()));
         UpdateHistorySections();
     }
 
-    internal List<HistorySection> Sections { get; private init; } = new List<HistorySection>();
+    private readonly List<HistorySection> sections = new();
 
     private void UpdateHistorySections()
     {
-        Sections.Reverse();
-        foreach (var (section, i) in Sections.Select((s, i) => (s, i)))
+        sections.Reverse();
+        foreach (var (section, i) in sections.Select((s, i) => (s, i)))
         {
             if (i == 0) section.AddNumber();
-            else section.AddNumber(Sections.ElementAt(i - 1));
+            else section.AddNumber(sections.ElementAt(i - 1));
         }
-        Sections.Reverse();
+        sections.Reverse();
     }
 
-    internal long GetHistoryValue() => Sections.First().GetSectionValue();
+    internal long GetHistoryValue() => sections.First().GetSectionValue();
 }
 
 public class Day9 : AdventOfCodeProgram

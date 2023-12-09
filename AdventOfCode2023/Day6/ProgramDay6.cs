@@ -54,8 +54,8 @@ Distance:  9  40  200", "71503")]
 
     protected override string RunPartOne()
     {
-        var times = Lines[0].Split(" ").Where(s => int.TryParse(s, out _)).Select(int.Parse);
-        var distances = Lines[1].Split(" ").Where(s => int.TryParse(s, out _)).Select(int.Parse);
+        var times = Lines.First().Split(" ").Where(s => int.TryParse(s, out _)).Select(int.Parse);
+        var distances = Lines.Last().Split(" ").Where(s => int.TryParse(s, out _)).Select(int.Parse);
         var races = times.Select((t, i) => new Race(t, distances.ElementAt(i)));
         var wins = races.Select(r => r.GetNumberOfWaysToWin());
         return wins.Aggregate((a, x) => a * x).ToString();
@@ -64,8 +64,8 @@ Distance:  9  40  200", "71503")]
     protected override string RunPartTwo()
     {
         var startTimeParsing = DateTime.Now;
-        var timeString = string.Join("", Lines[0].Split(" ").Where(s => int.TryParse(s, out _)));
-        var distanceString = string.Join("", Lines[1].Split(" ").Where(s => int.TryParse(s, out _)));
+        var timeString = string.Join("", Lines.First().Split(" ").Where(s => int.TryParse(s, out _)));
+        var distanceString = string.Join("", Lines.Last().Split(" ").Where(s => int.TryParse(s, out _)));
         var time = long.Parse(timeString);
         var distance = long.Parse(distanceString);
         var race = new Race(time, distance);

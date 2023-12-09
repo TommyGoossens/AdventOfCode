@@ -1,16 +1,15 @@
-﻿using AdventOfCodeShared.RegularExpressions;
-
+﻿
 namespace AdventOfCodeShared
 {
     public abstract class AdventOfCodeProgram
     {
         public int DayNumber { get; private init; }
-        protected string[] Lines { get; private init; }
+        protected IEnumerable<string> Lines { get; private init; }
 
         protected AdventOfCodeProgram(string? text = null)
         {
             DayNumber = GetDayNumber();
-            if (!string.IsNullOrEmpty(text)) Lines = text.Replace("\r", "").Split(Environment.NewLine);
+            if (!string.IsNullOrEmpty(text)) Lines = text.SplitOnNewLines();
             else
             {
                 var inputPath = Path.Combine($"Day{DayNumber}", "Input.txt");
@@ -41,8 +40,7 @@ namespace AdventOfCodeShared
         private int GetDayNumber()
         {
             var className = GetType().Name;
-            var re = DigitRegularExpressions.DayNumberRegex();
-            return int.Parse(re.Match(className).Value);
+            return className.ExtractNumber<int>();
         }
 
         private void PrintTitle(int maxWidth)

@@ -92,8 +92,10 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11",
         var trimmed = card.Split(':')[1];
         var winningSide = trimmed.Split("|")[0];
         var ownedSide = trimmed.Split("|")[1];
-        var winningNumbers = Regex.Matches(winningSide, @"\d+").Select(m => int.Parse(m.Value));
-        var ownedNumbers = Regex.Matches(ownedSide, @"\d+").Select(m => int.Parse(m.Value));
+
+        var winningNumbers = winningSide.ExtractNumbers<int>();
+        var ownedNumbers = ownedSide.ExtractNumbers<int>();
+
         var matches = ownedNumbers.Intersect(winningNumbers);
         return new(cardNumber + 1, matches); // + 1 because of zero index based linq
     }

@@ -24,19 +24,8 @@ public class SeedMapping
     {
         var (start, range) = pair;
         var maxLocation = SourceRangeStart + RangeLength;
-
-        /**
-            90 - 110
-        75 tot en met 120
-        **/
         return start <= maxLocation && start + range >= SourceRangeStart;
     }
-
-    // var leftRange = (SourceRangeStart - start);
-    // var leftPairRemaining = SourceRangeStart - leftRange
-
-    // var leftRange = (start + range - SourceRangeStart);
-    // var leftPairRemaining = SourceRangeStart - leftRange
 
     public (long Start, long End, long Offset) GetNewRange(long currentOffset = 0)
     {
@@ -58,10 +47,10 @@ public class SeedMapping
 
     public SeedMapping(string lineToParse)
     {
-        var digits = Regex.Matches(lineToParse, @"\d{1,}");
-        DestinationRangeStart = long.Parse(digits[0].Value);
-        SourceRangeStart = long.Parse(digits[1].Value);
-        RangeLength = long.Parse(digits[2].Value);
+        var digits = lineToParse.ExtractNumbers<long>();
+        DestinationRangeStart = digits.ElementAt(0);
+        SourceRangeStart = digits.ElementAt(1);
+        RangeLength = digits.ElementAt(2);
     }
 }
 
