@@ -1,6 +1,4 @@
 ﻿using AdventOfCodeShared;
-using System;
-using System.IO;
 
 namespace AdventOfCode2022.Day2
 {
@@ -44,23 +42,16 @@ namespace AdventOfCode2022.Day2
         }
     }
 
-    internal class ProgramDay2 : AdventOfCodeProgram
+    internal class ProgramDay2 : AdventOfCodeProgram<int>
     {
         public ProgramDay2(string? text = null) : base(text)
         {
         }
 
-        protected override string RunPartOne()
-        {
-            var part1 = GetAnswerPart1();
-            return $"Total score is: {part1}";
-        }
+        protected override int RunPartOne() => GetAnswerPart1();
 
-        protected override string RunPartTwo()
-        {
-            var part2 = GetAnswerPart2();
-            return $"Total score is: {part2}";
-        }
+
+        protected override int RunPartTwo() => GetAnswerPart2();
 
         private int GetAnswerPart1()
         {
@@ -122,14 +113,14 @@ namespace AdventOfCode2022.Day2
             return playerMoveScore;
         }
 
-        public override void RunTestsPartOne(string input, string expectedResult)
+        public override void RunTestsPartOne(string input, int expectedResult)
         {
-            throw new NotImplementedException();
+            new ProgramDay2(input).RunPartOne().Should().Be(expectedResult);
         }
 
-        public override void RunTestsPartTwo(string input, string expectedResult)
+        public override void RunTestsPartTwo(string input, int expectedResult)
         {
-            throw new NotImplementedException();
+            new ProgramDay2(input).RunPartOne().Should().Be(expectedResult);
         }
     }
 }

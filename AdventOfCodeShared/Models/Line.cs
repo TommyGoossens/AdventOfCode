@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCodeShared.Models
 {
-    public class Line
+    public record Line
     {
         public Point From { get; private init; }
         public Point To { get; private init; }

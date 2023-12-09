@@ -4,53 +4,45 @@ using AdventOfCodeShared.Models;
 
 namespace AdventOfCode2023.Day3
 {
-    public class Part : Line
+    public record Part(Point From, Point To, int PartValue) : Line(From, To)
     {
-        public int PartValue { get; private init; }
-        public Part(Point from, Point to, int value) : base(from, to)
-        {
-            PartValue = value;
-        }
+
     }
 
-    public class ProgramDay3 : AdventOfCodeProgram
+    public class ProgramDay3 : AdventOfCodeProgram<int>
     {
         public ProgramDay3(string? text = null) : base(text)
         {
         }
 
         [Theory]
-        [InlineData("467..114..\n...*......\n..35..633.\n......#...\n617*......\n.....+.58.\n..592.....\n......755.\n...$.*....\n.664.598.*\n.......100", "4461")]
-        public override void RunTestsPartOne(string input, string expectedResult)
+        [InlineData("467..114..\n...*......\n..35..633.\n......#...\n617*......\n.....+.58.\n..592.....\n......755.\n...$.*....\n.664.598.*\n.......100", 4461)]
+        public override void RunTestsPartOne(string input, int expectedResult)
         {
-            var program = new ProgramDay3(input);
-            var result = program.RunPartOne();
-            result.Should().Be(expectedResult);
+            new ProgramDay3(input).RunPartOne().Should().Be(expectedResult);
         }
 
         [Theory]
-        [InlineData("467..114..\n...*......\n..35..633.\n......#...\n617 * ......\n.....+.58.\n..592.....\n......755.\n...$.*....\n.664.598..", "467835")]
-        public override void RunTestsPartTwo(string input, string expectedResult)
+        [InlineData("467..114..\n...*......\n..35..633.\n......#...\n617 * ......\n.....+.58.\n..592.....\n......755.\n...$.*....\n.664.598..", 467835)]
+        public override void RunTestsPartTwo(string input, int expectedResult)
         {
-            var program = new ProgramDay3(input);
-            var result = program.RunPartTwo();
-            result.Should().Be(expectedResult);
+            new ProgramDay3(input).RunPartTwo().Should().Be(expectedResult);
         }
 
-        protected override string RunPartOne()
+        protected override int RunPartOne()
         {
             var partsCoordinates = Lines.SelectMany(CreatePartCoordinates);
             var symbols = Lines.SelectMany(CreateSymbolCoordinates);
             var sum = partsCoordinates.Where(p => IsAdjacentToSymbol(p, symbols)).Sum(p => p.PartValue);
-            return sum.ToString();
+            return sum;
         }
 
-        protected override string RunPartTwo()
+        protected override int RunPartTwo()
         {
             var getGearCoordinates = Lines.SelectMany(CreateGearCoordinates);
             var partsCoordinates = Lines.SelectMany(CreatePartCoordinates);
             var pairs = getGearCoordinates.Select(g => FindPartPairs(g, partsCoordinates)).Distinct();
-            return pairs.Where(p => p != null).Distinct().Sum(p => p!.Value.FirstPart * p.Value.SecondPart).ToString();
+            return pairs.Where(p => p != null).Distinct().Sum(p => p!.Value.FirstPart * p.Value.SecondPart);
         }
 
         private IEnumerable<Point> CreateGearCoordinates(string line, int index)

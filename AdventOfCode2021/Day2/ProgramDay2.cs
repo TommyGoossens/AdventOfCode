@@ -4,23 +4,16 @@ using Xunit;
 
 namespace AdventOfCode2021.Day2
 {
-    public class ProgramDay2 : AdventOfCodeProgram
+    public class ProgramDay2 : AdventOfCodeProgram<int>
     {
         public ProgramDay2(string? text = null) : base(text)
         {
         }
 
-        protected override string RunPartOne()
-        {
-            var depth = CalculateDepth(false);
-            return $"Horizontal * depth = {depth}";
-        }
+        protected override int RunPartOne() => CalculateDepth(false);
 
-        protected override string RunPartTwo()
-        {
-            var depth = CalculateDepth(true);
-            return $"Horizontal * depth (adjusted with aim) = {depth}";
-        }
+        protected override int RunPartTwo() => CalculateDepth(true);
+
 
         private int CalculateDepth(bool takeAimIntoAccount)
         {
@@ -50,21 +43,17 @@ namespace AdventOfCode2021.Day2
         }
 
         [Theory]
-        [InlineData("forward 5\r\ndown 5\r\nforward 8\r\nup 3\r\ndown 8\r\nforward 2", "150")]
-        public override void RunTestsPartOne(string input, string expectedResult)
+        [InlineData("forward 5\r\ndown 5\r\nforward 8\r\nup 3\r\ndown 8\r\nforward 2", 150)]
+        public override void RunTestsPartOne(string input, int expectedResult)
         {
-            var program = new ProgramDay2(input);
-            var result = program.RunPartOne();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay2(input).RunPartOne().Should().Be(expectedResult);
         }
 
         [Theory]
-        [InlineData("forward 5\r\ndown 5\r\nforward 8\r\nup 3\r\ndown 8\r\nforward 2", "900")]
-        public override void RunTestsPartTwo(string input, string expectedResult)
+        [InlineData("forward 5\r\ndown 5\r\nforward 8\r\nup 3\r\ndown 8\r\nforward 2", 900)]
+        public override void RunTestsPartTwo(string input, int expectedResult)
         {
-            var program = new ProgramDay2(input);
-            var result = program.RunPartTwo();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay2(input).RunPartTwo().Should().Be(expectedResult);
         }
     }
 }

@@ -1,47 +1,40 @@
-﻿using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using AdventOfCodeShared;
-using AdventOfCodeShared.Models;
-using FluentAssertions;
-using Xunit;
 
 namespace AdventOfCode2023.Day1
 {
-    public class ProgramDay1 : AdventOfCodeProgram
+    public class ProgramDay1 : AdventOfCodeProgram<int>
     {
         public ProgramDay1(string? text = null) : base(text)
         {
         }
 
         [Theory()]
-        [InlineData("1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet", "142")]
-        public override void RunTestsPartOne(string input, string expectedResult)
+        [InlineData("1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet", 142)]
+        public override void RunTestsPartOne(string input, int expectedResult)
         {
-            var program = new ProgramDay1(input);
-            var result = program.RunPartOne();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay1(input).RunPartOne().Should().Be(expectedResult);
+
         }
 
         [Theory()]
-        [InlineData("two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen", "281")]
-        public override void RunTestsPartTwo(string input, string expectedResult)
+        [InlineData("two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen", 281)]
+        public override void RunTestsPartTwo(string input, int expectedResult)
         {
-            var program = new ProgramDay1(input);
-            var result = program.RunPartTwo();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay1(input).RunPartTwo().Should().Be(expectedResult);
         }
 
-        protected override string RunPartOne()
+        protected override int RunPartOne()
         {
             var sum = Lines
             .Select(line => Regex.Replace(line, "[a-z]", ""))
             .Select(line => $"{line.First()}{line.Last()}")
             .Select(int.Parse)
             .Sum();
-            return $"Total is: {sum}";
+            return sum;
         }
 
-        protected override string RunPartTwo()
+        protected override int RunPartTwo()
         {
             var sum = Lines
             .Select(ReplaceOverlappingDigitsAndRemoveUnwantedChars)
@@ -49,7 +42,7 @@ namespace AdventOfCode2023.Day1
             .Select(int.Parse)
             .Sum();
 
-            return $"Total is: {sum}";
+            return sum;
         }
 
         private string ReplaceOverlappingDigitsAndRemoveUnwantedChars(string digit)

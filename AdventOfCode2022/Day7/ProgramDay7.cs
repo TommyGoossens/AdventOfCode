@@ -1,8 +1,5 @@
-﻿using AdventOfCodeShared;
-using FluentAssertions;
-using System.IO;
-using System.Text.RegularExpressions;
-using Xunit;
+﻿using System.Text.RegularExpressions;
+using AdventOfCodeShared;
 
 namespace AdventOfCode2022.Day7
 {
@@ -55,12 +52,12 @@ namespace AdventOfCode2022.Day7
         }
     }
 
-    public class ProgramDay7 : AdventOfCodeProgram
+    public class ProgramDay7 : AdventOfCodeProgram<int>
     {
         public ProgramDay7(string? text = null) : base(text)
         {
         }
-        protected override string RunPartTwo()
+        protected override int RunPartTwo()
         {
             var listOfAllKnownDirectories = GetListOfAllKnownDirectories();
             var rootDir = listOfAllKnownDirectories.First(d => d.Name.Equals("/"));
@@ -70,16 +67,16 @@ namespace AdventOfCode2022.Day7
             var dirsWithMatchingSize = listOfAllKnownDirectories.Where(d => d.GetTotalSizeOfFiles() >= needToClearUp).ToList();
 
             var part2 = dirsWithMatchingSize.Select(d => d.GetTotalSizeOfFiles()).OrderBy(d => d).First();
-            return $"Size of dir to delete: {part2}";
+            return part2;
         }
 
-        protected override string RunPartOne()
+        protected override int RunPartOne()
         {
             var listOfAllKnownDirectories = GetListOfAllKnownDirectories();
 
             var part1 = listOfAllKnownDirectories.Where(d => d.GetTotalSizeOfFiles() <= 100000).Sum(d => d.GetTotalSizeOfFiles());
 
-            return $"Sum of files: {part1}";
+            return part1;
         }
 
         private IEnumerable<Directory> GetListOfAllKnownDirectories()
@@ -111,21 +108,17 @@ namespace AdventOfCode2022.Day7
         }
 
         [Theory]
-        [InlineData("$ cd /\r\n$ ls\r\ndir a\r\n14848514 b.txt\r\n8504156 c.dat\r\ndir d\r\n$ cd a\r\n$ ls\r\ndir e\r\n29116 f\r\n2557 g\r\n62596 h.lst\r\n$ cd e\r\n$ ls\r\n584 i\r\n$ cd ..\r\n$ cd ..\r\n$ cd d\r\n$ ls\r\n4060174 j\r\n8033020 d.log\r\n5626152 d.ext\r\n7214296 k", "95437")]
-        public override void RunTestsPartOne(string input, string expectedResult)
+        [InlineData("$ cd /\r\n$ ls\r\ndir a\r\n14848514 b.txt\r\n8504156 c.dat\r\ndir d\r\n$ cd a\r\n$ ls\r\ndir e\r\n29116 f\r\n2557 g\r\n62596 h.lst\r\n$ cd e\r\n$ ls\r\n584 i\r\n$ cd ..\r\n$ cd ..\r\n$ cd d\r\n$ ls\r\n4060174 j\r\n8033020 d.log\r\n5626152 d.ext\r\n7214296 k", 95437)]
+        public override void RunTestsPartOne(string input, int expectedResult)
         {
-            var program = new ProgramDay7(input);
-            var result = program.RunPartOne();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay7(input).RunPartOne().Should().Be(expectedResult);
         }
 
         [Theory]
-        [InlineData("$ cd /\r\n$ ls\r\ndir a\r\n14848514 b.txt\r\n8504156 c.dat\r\ndir d\r\n$ cd a\r\n$ ls\r\ndir e\r\n29116 f\r\n2557 g\r\n62596 h.lst\r\n$ cd e\r\n$ ls\r\n584 i\r\n$ cd ..\r\n$ cd ..\r\n$ cd d\r\n$ ls\r\n4060174 j\r\n8033020 d.log\r\n5626152 d.ext\r\n7214296 k", "24933642")]
-        public override void RunTestsPartTwo(string input, string expectedResult)
+        [InlineData("$ cd /\r\n$ ls\r\ndir a\r\n14848514 b.txt\r\n8504156 c.dat\r\ndir d\r\n$ cd a\r\n$ ls\r\ndir e\r\n29116 f\r\n2557 g\r\n62596 h.lst\r\n$ cd e\r\n$ ls\r\n584 i\r\n$ cd ..\r\n$ cd ..\r\n$ cd d\r\n$ ls\r\n4060174 j\r\n8033020 d.log\r\n5626152 d.ext\r\n7214296 k", 24933642)]
+        public override void RunTestsPartTwo(string input, int expectedResult)
         {
-            var program = new ProgramDay7(input);
-            var result = program.RunPartTwo();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay7(input).RunPartTwo().Should().Be(expectedResult);
         }
     }
 }

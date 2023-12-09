@@ -26,7 +26,7 @@ public class Race
     private bool RaceIsOverHalftime(int elapsedTime) => elapsedTime >= Time / 2;
 }
 
-public class ProgramDay6 : AdventOfCodeProgram
+public class ProgramDay6 : AdventOfCodeProgram<long>
 {
     public ProgramDay6(string? text = null) : base(text)
     {
@@ -34,34 +34,30 @@ public class ProgramDay6 : AdventOfCodeProgram
 
     [Theory]
     [InlineData(@"Time:      7  15   30
-Distance:  9  40  200", "288")]
-    public override void RunTestsPartOne(string input, string expectedResult)
+Distance:  9  40  200", 288)]
+    public override void RunTestsPartOne(string input, long expectedResult)
     {
-        var program = new ProgramDay6(input);
-        var result = program.RunPartOne();
-        result.Should().Be(expectedResult);
+        new ProgramDay6(input).RunPartOne().Should().Be(expectedResult);
     }
 
     [Theory]
     [InlineData(@"Time:      7  15   30
-Distance:  9  40  200", "71503")]
-    public override void RunTestsPartTwo(string input, string expectedResult)
+Distance:  9  40  200", 71503)]
+    public override void RunTestsPartTwo(string input, long expectedResult)
     {
-        var program = new ProgramDay6(input);
-        var result = program.RunPartTwo();
-        result.Should().Be(expectedResult);
+        new ProgramDay6(input).RunPartTwo().Should().Be(expectedResult);
     }
 
-    protected override string RunPartOne()
+    protected override long RunPartOne()
     {
         var times = Lines.First().Split(" ").Where(s => int.TryParse(s, out _)).Select(int.Parse);
         var distances = Lines.Last().Split(" ").Where(s => int.TryParse(s, out _)).Select(int.Parse);
         var races = times.Select((t, i) => new Race(t, distances.ElementAt(i)));
         var wins = races.Select(r => r.GetNumberOfWaysToWin());
-        return wins.Aggregate((a, x) => a * x).ToString();
+        return wins.Aggregate((a, x) => a * x);
     }
 
-    protected override string RunPartTwo()
+    protected override long RunPartTwo()
     {
         var startTimeParsing = DateTime.Now;
         var timeString = string.Join("", Lines.First().Split(" ").Where(s => int.TryParse(s, out _)));
@@ -73,6 +69,6 @@ Distance:  9  40  200", "71503")]
         var startTimeRace = DateTime.Now;
         var wins = race.GetNumberOfWaysToWin();
         Console.WriteLine($"Race took {(DateTime.Now - startTimeRace).Milliseconds}");
-        return wins.ToString();
+        return wins;
     }
 }

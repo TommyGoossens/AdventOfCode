@@ -4,15 +4,15 @@ namespace AdventOfCodeShared
 {
     public static class AdventOfCodeProgramFactory
     {
-        public static IEnumerable<AdventOfCodeProgram> CreatePrograms(Assembly assembly)
+        public static IEnumerable<IAdventOfCodeProgram> CreatePrograms(Assembly assembly)
         {
-            var programList = new List<AdventOfCodeProgram>();
+            var programList = new List<IAdventOfCodeProgram>();
 
-            foreach (var program in assembly.GetTypes().Where(type => typeof(AdventOfCodeProgram).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract))
+            foreach (var program in assembly.GetTypes().Where(type => typeof(IAdventOfCodeProgram).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract))
             {
                 try
                 {
-                    if (Activator.CreateInstance(program, string.Empty) is AdventOfCodeProgram instance) programList.Add(instance);
+                    if (Activator.CreateInstance(program, string.Empty) is IAdventOfCodeProgram instance) programList.Add(instance);
                 }
                 catch (Exception)
                 {

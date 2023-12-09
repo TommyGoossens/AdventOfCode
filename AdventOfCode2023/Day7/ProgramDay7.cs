@@ -1,4 +1,5 @@
 ﻿using AdventOfCodeShared;
+
 namespace AdventOfCode2023;
 public enum HandType
 {
@@ -76,7 +77,7 @@ public class Hand
     }
 }
 
-public class ProgramDay7 : AdventOfCodeProgram
+public class ProgramDay7 : AdventOfCodeProgram<long>
 {
     public ProgramDay7(string? text = null) : base(text)
     {
@@ -87,12 +88,10 @@ public class ProgramDay7 : AdventOfCodeProgram
 T55J5 684
 KK677 28
 KTJJT 220
-QQQJA 483", "6440")]
-    public override void RunTestsPartOne(string input, string expectedResult)
+QQQJA 483", 6440)]
+    public override void RunTestsPartOne(string input, long expectedResult)
     {
-        var program = new ProgramDay7(input);
-        var result = program.RunPartOne();
-        result.Should().Be(expectedResult);
+        new ProgramDay7(input).RunPartOne().Should().Be(expectedResult);
     }
 
     [Theory]
@@ -114,25 +113,23 @@ AAAAJ 59
 AAAAA 61
 2AAAA 23
 2JJJJ 53
-JJJJ2 41", "6839")]
-    public override void RunTestsPartTwo(string input, string expectedResult)
+JJJJ2 41", 6839)]
+    public override void RunTestsPartTwo(string input, long expectedResult)
     {
-        var program = new ProgramDay7(input);
-        var result = program.RunPartTwo();
-        result.Should().Be(expectedResult);
+        new ProgramDay7(input).RunPartTwo().Should().Be(expectedResult);
     }
 
-    protected override string RunPartOne()
+    protected override long RunPartOne()
     {
         var result = PlayGame();
-        return result.Select((c, i) => c.Bid * (i + 1)).Sum().ToString();
+        return result.Select((c, i) => c.Bid * (i + 1)).Sum();
 
     }
 
-    protected override string RunPartTwo()
+    protected override long RunPartTwo()
     {
         var result = PlayGame(true);
-        return result.Select((c, i) => c.Bid * (i + 1)).Sum().ToString();
+        return result.Select((c, i) => c.Bid * (i + 1)).Sum();
     }
 
     private List<Hand> PlayGame(bool includeJokers = false)

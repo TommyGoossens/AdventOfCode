@@ -1,6 +1,5 @@
 ﻿using AdventOfCodeShared;
 using FluentAssertions;
-using System.IO;
 using Xunit;
 
 namespace AdventOfCode2021.Day4
@@ -36,23 +35,15 @@ namespace AdventOfCode2021.Day4
 
         public int GetTotalOfUnmarkedTiles() => tiles.Sum(r => r.Where(d => d.Value == false).Select(d => d.Key).Sum());
     }
-    public class ProgramDay4 : AdventOfCodeProgram
+    public class ProgramDay4 : AdventOfCodeProgram<int>
     {
         public ProgramDay4(string? text = null) : base(text)
         {
         }
 
-        protected override string RunPartOne()
-        {
-            var part1 = PlayBingo().part1;
-            return $"Sum of unmarked values on winning board: {part1}";
-        }
+        protected override int RunPartOne() => PlayBingo().part1;
 
-        protected override string RunPartTwo()
-        {
-            var part2 = PlayBingo().part2;
-            return $"Sum of unmarked values on last board: {part2}";
-        }
+        protected override int RunPartTwo() => PlayBingo().part2;
 
         private (int part1, int part2) PlayBingo()
         {
@@ -73,21 +64,17 @@ namespace AdventOfCode2021.Day4
         }
 
         [Theory]
-        [InlineData("7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1\r\n\r\n22 13 17 11  0\r\n 8  2 23  4 24\r\n21  9 14 16  7\r\n 6 10  3 18  5\r\n 1 12 20 15 19\r\n\r\n 3 15  0  2 22\r\n 9 18 13 17  5\r\n19  8  7 25 23\r\n20 11 10 24  4\r\n14 21 16 12  6\r\n\r\n14 21 17 24  4\r\n10 16 15  9 19\r\n18  8 23 26 20\r\n22 11 13  6  5\r\n 2  0 12  3  7", "4512")]
-        public override void RunTestsPartOne(string input, string expectedResult)
+        [InlineData("7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1\r\n\r\n22 13 17 11  0\r\n 8  2 23  4 24\r\n21  9 14 16  7\r\n 6 10  3 18  5\r\n 1 12 20 15 19\r\n\r\n 3 15  0  2 22\r\n 9 18 13 17  5\r\n19  8  7 25 23\r\n20 11 10 24  4\r\n14 21 16 12  6\r\n\r\n14 21 17 24  4\r\n10 16 15  9 19\r\n18  8 23 26 20\r\n22 11 13  6  5\r\n 2  0 12  3  7", 4512)]
+        public override void RunTestsPartOne(string input, int expectedResult)
         {
-            var program = new ProgramDay4(input);
-            var result = program.RunPartOne();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay4(input).RunPartOne().Should().Be(expectedResult);
         }
 
         [Theory]
-        [InlineData("7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1\r\n\r\n22 13 17 11  0\r\n 8  2 23  4 24\r\n21  9 14 16  7\r\n 6 10  3 18  5\r\n 1 12 20 15 19\r\n\r\n 3 15  0  2 22\r\n 9 18 13 17  5\r\n19  8  7 25 23\r\n20 11 10 24  4\r\n14 21 16 12  6\r\n\r\n14 21 17 24  4\r\n10 16 15  9 19\r\n18  8 23 26 20\r\n22 11 13  6  5\r\n 2  0 12  3  7", "1924")]
-        public override void RunTestsPartTwo(string input, string expectedResult)
+        [InlineData("7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1\r\n\r\n22 13 17 11  0\r\n 8  2 23  4 24\r\n21  9 14 16  7\r\n 6 10  3 18  5\r\n 1 12 20 15 19\r\n\r\n 3 15  0  2 22\r\n 9 18 13 17  5\r\n19  8  7 25 23\r\n20 11 10 24  4\r\n14 21 16 12  6\r\n\r\n14 21 17 24  4\r\n10 16 15  9 19\r\n18  8 23 26 20\r\n22 11 13  6  5\r\n 2  0 12  3  7", 1924)]
+        public override void RunTestsPartTwo(string input, int expectedResult)
         {
-            var program = new ProgramDay4(input);
-            var result = program.RunPartTwo();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay4(input).RunPartTwo().Should().Be(expectedResult);
         }
     }
 }

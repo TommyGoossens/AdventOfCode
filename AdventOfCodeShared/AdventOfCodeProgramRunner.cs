@@ -2,7 +2,7 @@ namespace AdventOfCodeShared
 {
     public static class AdventOfCodeProgramRunner
     {
-        public static void RunPrograms(IEnumerable<AdventOfCodeProgram> programs)
+        public static void RunPrograms(IEnumerable<IAdventOfCodeProgram> programs)
         {
             var startTime = DateTime.Now;
             foreach (var program in programs.OrderBy(p => p.DayNumber))

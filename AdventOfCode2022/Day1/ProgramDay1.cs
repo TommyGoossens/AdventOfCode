@@ -2,24 +2,24 @@
 
 namespace AdventOfCode2022.Day1
 {
-    internal class ProgramDay1 : AdventOfCodeProgram
+    internal class ProgramDay1 : AdventOfCodeProgram<int>
     {
         public ProgramDay1(string? text = null) : base(text)
         {
         }
 
-        protected override string RunPartOne()
+        protected override int RunPartOne()
         {
             var orderedElfList = GetOrderedElfList();
             var mostCalories = orderedElfList.First(); // Part1
-            return $"Most calories: {mostCalories}.";
+            return mostCalories;
         }
-        
-        protected override string RunPartTwo()
+
+        protected override int RunPartTwo()
         {
             var orderedElfList = GetOrderedElfList();
             var top3 = orderedElfList.Sum(e => e); // Part 2
-            return $"The sum of the top 3 elfs is: {top3}";
+            return top3;
         }
 
         private IEnumerable<int> GetOrderedElfList()
@@ -42,14 +42,14 @@ namespace AdventOfCode2022.Day1
             return orderedElfList;
         }
 
-        public override void RunTestsPartOne(string input, string expectedResult)
+        public override void RunTestsPartOne(string input, int expectedResult)
         {
-            throw new NotImplementedException();
+            new ProgramDay1(input).RunPartOne().Should().Be(expectedResult);
         }
 
-        public override void RunTestsPartTwo(string input, string expectedResult)
+        public override void RunTestsPartTwo(string input, int expectedResult)
         {
-            throw new NotImplementedException();
+            new ProgramDay1(input).RunPartTwo().Should().Be(expectedResult);
         }
     }
 }

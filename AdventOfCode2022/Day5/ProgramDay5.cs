@@ -1,13 +1,9 @@
-﻿using AdventOfCode2022.Day6;
-using AdventOfCodeShared;
-using FluentAssertions;
-using System.IO;
+﻿using AdventOfCodeShared;
 using System.Text.RegularExpressions;
-using Xunit;
 
 namespace AdventOfCode2022.Day5
 {
-    public class ProgramDay5 : AdventOfCodeProgram
+    public class ProgramDay5 : AdventOfCodeProgram<string>
     {
         private string[] actions;
         public ProgramDay5(string? text = null) : base(text)
@@ -19,14 +15,14 @@ namespace AdventOfCode2022.Day5
         {
             var endResult1 = PerformMoveActions(GetCurrentStackAsDictionary(), actions, false);
             var part1 = string.Join("", endResult1.Select(d => d.Value.FirstOrDefault().ToString()));
-            return $"Rearrangement done: {part1}";
+            return part1;
         }
 
         protected override string RunPartTwo()
         {
             var endResult2 = PerformMoveActions(GetCurrentStackAsDictionary(), actions, true);
             var part2 = string.Join("", endResult2.Select(d => d.Value.FirstOrDefault().ToString()));
-            return $"Rearramgement with CrateMover 9001: {part2}";
+            return part2;
         }
         private Dictionary<int, List<char>> PerformMoveActions(Dictionary<int, List<char>> currentStack, string[] actions, bool canPickupMultipleBoxes)
         {
@@ -106,18 +102,14 @@ namespace AdventOfCode2022.Day5
         [InlineData("    [D]    \r\n[N] [C]    \r\n[Z] [M] [P]\r\n 1   2   3 \r\n\r\nmove 1 from 2 to 1\r\nmove 3 from 1 to 3\r\nmove 2 from 2 to 1\r\nmove 1 from 1 to 2", "CMZ")]
         public override void RunTestsPartOne(string input, string expectedResult)
         {
-            var program = new ProgramDay5(input);
-            var result = program.RunPartOne();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay5(input).RunPartOne().Should().Be(expectedResult);
         }
 
         [Theory]
         [InlineData("    [D]    \r\n[N] [C]    \r\n[Z] [M] [P]\r\n 1   2   3 \r\n\r\nmove 1 from 2 to 1\r\nmove 3 from 1 to 3\r\nmove 2 from 2 to 1\r\nmove 1 from 1 to 2", "MCD")]
         public override void RunTestsPartTwo(string input, string expectedResult)
         {
-            var program = new ProgramDay5(input);
-            var result = program.RunPartTwo();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay5(input).RunPartTwo().Should().Be(expectedResult);
         }
     }
 }

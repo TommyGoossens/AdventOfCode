@@ -22,22 +22,22 @@ namespace AdventOfCode2021.Day3
         }
 
     }
-    public class ProgramDay3 : AdventOfCodeProgram
+    public class ProgramDay3 : AdventOfCodeProgram<int>
     {
         public ProgramDay3(string? text = null) : base(text)
         {
         }
 
-        protected override string RunPartOne()
+        protected override int RunPartOne()
         {
-            var (gamma, epsilon) = SolvePartOne();            
-            return $"Gamma ({gamma}) * Epsilon ({epsilon}) = {gamma * epsilon}";
+            var (gamma, epsilon) = SolvePartOne();
+            return gamma * epsilon;
         }
 
-        protected override string RunPartTwo()
+        protected override int RunPartTwo()
         {
             var (oxygen, scrubber) = SolvePartTwo();
-            return $"Oxygen ({oxygen}) * Scrubber ({scrubber}) = {oxygen * scrubber}";
+            return oxygen * scrubber;
         }
 
         private (int gamma, int epsilon) SolvePartOne()
@@ -75,21 +75,17 @@ namespace AdventOfCode2021.Day3
         }
 
         [Theory]
-        [InlineData("00100\r\n11110\r\n10110\r\n10111\r\n10101\r\n01111\r\n00111\r\n11100\r\n10000\r\n11001\r\n00010\r\n01010", "198")]
-        public override void RunTestsPartOne(string input, string expectedResult)
+        [InlineData("00100\r\n11110\r\n10110\r\n10111\r\n10101\r\n01111\r\n00111\r\n11100\r\n10000\r\n11001\r\n00010\r\n01010", 198)]
+        public override void RunTestsPartOne(string input, int expectedResult)
         {
-            var program = new ProgramDay3(input);
-            var result = program.RunPartOne();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay3(input).RunPartOne().Should().Be(expectedResult);
         }
 
         [Theory]
-        [InlineData("00100\r\n11110\r\n10110\r\n10111\r\n10101\r\n01111\r\n00111\r\n11100\r\n10000\r\n11001\r\n00010\r\n01010", "230")]
-        public override void RunTestsPartTwo(string input, string expectedResult)
+        [InlineData("00100\r\n11110\r\n10110\r\n10111\r\n10101\r\n01111\r\n00111\r\n11100\r\n10000\r\n11001\r\n00010\r\n01010", 230)]
+        public override void RunTestsPartTwo(string input, int expectedResult)
         {
-            var program = new ProgramDay3(input);
-            var result = program.RunPartTwo();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay3(input).RunPartTwo().Should().Be(expectedResult);
         }
     }
 }

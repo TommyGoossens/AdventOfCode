@@ -1,10 +1,8 @@
 ﻿using AdventOfCodeShared;
-using FluentAssertions;
-using Xunit;
 
 namespace AdventOfCode2022.Day3
 {
-    public class ProgramDay3 : AdventOfCodeProgram
+    public class ProgramDay3 : AdventOfCodeProgram<int>
     {
         private readonly Dictionary<char, int> letterValues;
 
@@ -20,17 +18,10 @@ namespace AdventOfCode2022.Day3
             }
         }
 
-        protected override string RunPartOne()
-        {
-            var prioritySum = GetAnswerPart1();
-            return $"The sum of priorities is: {prioritySum}";
-        }
+        protected override int RunPartOne() => GetAnswerPart1();
 
-        protected override string RunPartTwo()
-        {
-            var badgesSum = GetAnswerPart2();
-            return $"The sum of badges is: {badgesSum}";
-        }
+        protected override int RunPartTwo() => GetAnswerPart2();
+
         private int GetAnswerPart1()
         {
             var total = 0;
@@ -48,7 +39,7 @@ namespace AdventOfCode2022.Day3
         {
             var total = 0;
             var i = 0;
-            while ((i * 3) != Lines.Length)
+            while ((i * 3) != Lines.Count())
             {
                 var batch = Lines.Skip(i * 3).Take(3);
                 var intersection = batch.Skip(1).Aggregate(new HashSet<char>(batch.First()),
@@ -63,21 +54,17 @@ namespace AdventOfCode2022.Day3
         private int GetValueOfIntersectedChars(IEnumerable<char> chars) => chars.Where(c => letterValues.TryGetValue(c, out var _)).Select(c => letterValues[c]).Sum();
 
         [Theory]
-        [InlineData("vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw", "157")]
-        public override void RunTestsPartOne(string input, string expectedResult)
+        [InlineData("vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw", 157)]
+        public override void RunTestsPartOne(string input, int expectedResult)
         {
-            var program = new ProgramDay3(input);
-            var result = program.RunPartOne();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay3(input).RunPartOne().Should().Be(expectedResult);
         }
 
         [Theory]
-        [InlineData("vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw", "70")]
-        public override void RunTestsPartTwo(string input, string expectedResult)
+        [InlineData("vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw", 70)]
+        public override void RunTestsPartTwo(string input, int expectedResult)
         {
-            var program = new ProgramDay3(input);
-            var result = program.RunPartTwo();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay3(input).RunPartTwo().Should().Be(expectedResult);
         }
     }
 }

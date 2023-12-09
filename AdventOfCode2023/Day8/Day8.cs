@@ -52,7 +52,7 @@ public class MapTraverser
     private static long GCD(long a, long b) => b == 0 ? a : GCD(b, a % b);
 }
 
-public class Day8 : AdventOfCodeProgram
+public class Day8 : AdventOfCodeProgram<long>
 {
     public Day8(string? text = null) : base(text)
     {
@@ -67,17 +67,15 @@ public class Day8 : AdventOfCodeProgram
     DDD = (DDD, DDD)
     EEE = (EEE, EEE)
     GGG = (GGG, GGG)
-    ZZZ = (ZZZ, ZZZ)", "2")]
+    ZZZ = (ZZZ, ZZZ)", 2)]
     [InlineData(@"LLR
 
     AAA = (BBB, BBB)
     BBB = (AAA, ZZZ)
-    ZZZ = (ZZZ, ZZZ)", "6")]
-    public override void RunTestsPartOne(string input, string expectedResult)
+    ZZZ = (ZZZ, ZZZ)", 6)]
+    public override void RunTestsPartOne(string input, long expectedResult)
     {
-        var program = new Day8(input);
-        var result = program.RunPartOne();
-        result.Should().Be(expectedResult);
+        new Day8(input).RunPartOne().Should().Be(expectedResult);
     }
     [Theory]
     [InlineData(@"LR
@@ -89,27 +87,25 @@ public class Day8 : AdventOfCodeProgram
     22B = (22C, 22C)
     22C = (22Z, 22Z)
     22Z = (22B, 22B)
-    XXX = (XXX, XXX)", "6")]
-    public override void RunTestsPartTwo(string input, string expectedResult)
+    XXX = (XXX, XXX)", 6)]
+    public override void RunTestsPartTwo(string input, long expectedResult)
     {
-        var program = new Day8(input);
-        var result = program.RunPartTwo();
-        result.Should().Be(expectedResult);
+        new Day8(input).RunPartTwo().Should().Be(expectedResult);
     }
 
-    protected override string RunPartOne()
+    protected override long RunPartOne()
     {
         var instuctionSet = Lines.First().Select(c => c);
         var map = new MapTraverser(Lines.Skip(2));
         var steps = map.TraverseToAndCountSteps(@"[A]{3}", "Z", instuctionSet);
-        return steps.ToString();
+        return steps;
     }
 
-    protected override string RunPartTwo()
+    protected override long RunPartTwo()
     {
         var instuctionSet = Lines.First().Select(c => c);
         var map = new MapTraverser(Lines.Skip(2));
         var steps = map.TraverseToAndCountSteps(@"(\d{2}|[A-Z]{2})[A]{1}", "Z", instuctionSet);
-        return steps.ToString();
+        return steps;
     }
 }

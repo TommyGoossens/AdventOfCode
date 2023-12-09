@@ -1,10 +1,8 @@
 ﻿using AdventOfCodeShared;
-using FluentAssertions;
-using Xunit;
 
 namespace AdventOfCode2022.Day8
 {
-    public class ProgramDay8 : AdventOfCodeProgram
+    public class ProgramDay8 : AdventOfCodeProgram<int>
     {
         private readonly List<List<double>> linesAsInt;
         public ProgramDay8(string? text = null) : base(text)
@@ -12,16 +10,8 @@ namespace AdventOfCode2022.Day8
             linesAsInt = Lines.Select(l => l.Select(c => char.GetNumericValue(c)).ToList()).ToList();
         }
 
-        protected override string RunPartOne()
-        {
-            int part1 = HandlePartOne();
-            return $"{part1} trees are visible";
-        }
-        protected override string RunPartTwo()
-        {
-            int part2 = HandlePartTwo();
-            return $"Highest scenic score is: {part2}";
-        }
+        protected override int RunPartOne() => HandlePartOne();
+        protected override int RunPartTwo() => HandlePartTwo();
 
         private int GetVisibleTreesInList(IEnumerable<double> trees, double currentTree)
         {
@@ -33,6 +23,7 @@ namespace AdventOfCode2022.Day8
             }
             return nrOfVisibleTrees;
         }
+
         private int HandlePartTwo()
         {
             var scenicScores = new List<int>();
@@ -84,22 +75,17 @@ namespace AdventOfCode2022.Day8
         }
 
         [Theory]
-        [InlineData("30373\r\n25512\r\n65332\r\n33549\r\n35390", "21")]
-        public override void RunTestsPartOne(string input, string expectedResult)
+        [InlineData("30373\r\n25512\r\n65332\r\n33549\r\n35390", 21)]
+        public override void RunTestsPartOne(string input, int expectedResult)
         {
-            var program = new ProgramDay8(input);
-            var result = program.RunPartOne();
-            result.Should().StartWithEquivalentOf(expectedResult);
+            new ProgramDay8(input).RunPartOne().Should().Be(expectedResult);
         }
 
         [Theory]
-        [InlineData("30373\r\n25512\r\n65332\r\n33549\r\n35390", "8")]
-        public override void RunTestsPartTwo(string input, string expectedResult)
+        [InlineData("30373\r\n25512\r\n65332\r\n33549\r\n35390", 8)]
+        public override void RunTestsPartTwo(string input, int expectedResult)
         {
-            var program = new ProgramDay8(input);
-            var result = program.RunPartTwo();
-            result.Should().EndWithEquivalentOf(expectedResult);
+            new ProgramDay8(input).RunPartTwo().Should().Be(expectedResult);
         }
-
     }
 }

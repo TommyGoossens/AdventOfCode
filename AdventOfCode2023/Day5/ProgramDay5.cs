@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.ComponentModel;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using AdventOfCodeShared;
 
 namespace AdventOfCode2023;
@@ -54,7 +52,7 @@ public class SeedMapping
     }
 }
 
-public class ProgramDay5 : AdventOfCodeProgram
+public class ProgramDay5 : AdventOfCodeProgram<long>
 {
     public ProgramDay5(string? text = null) : base(text)
     {
@@ -93,12 +91,10 @@ temperature-to-humidity map:
 
 humidity-to-location map:
 60 56 37
-56 93 4", "35")]
-    public override void RunTestsPartOne(string input, string expectedResult)
+56 93 4", 35)]
+    public override void RunTestsPartOne(string input, long expectedResult)
     {
-        var program = new ProgramDay5(input);
-        var result = program.RunPartOne();
-        result.Should().Be(expectedResult);
+        new ProgramDay5(input).RunPartOne().Should().Be(expectedResult);
     }
 
     [Theory]
@@ -134,12 +130,10 @@ temperature-to-humidity map:
 
 humidity-to-location map:
 60 56 37
-56 93 4", "46")]
-    public override void RunTestsPartTwo(string input, string expectedResult)
+56 93 4", 46)]
+    public override void RunTestsPartTwo(string input, long expectedResult)
     {
-        var program = new ProgramDay5(input);
-        var result = program.RunPartTwo();
-        result.Should().Be(expectedResult);
+        new ProgramDay5(input).RunPartTwo().Should().Be(expectedResult);
     }
 
     private IEnumerable<SeedMapping> GetSeedMappings(IEnumerable<string> trimmed, IEnumerable<SeedHeader> headers, int headerIndex, int i)
@@ -149,11 +143,11 @@ humidity-to-location map:
         return startingPosition.Select(l => new SeedMapping(l));
     }
 
-    protected override string RunPartOne()
+    protected override long RunPartOne()
     {
         var seedsToPlant = Lines.First().Split(": ")[1].Split(' ').Select(long.Parse);
         var minimum = GetMinimumSeedLocation(seedsToPlant);
-        return minimum.ToString();
+        return minimum;
     }
     private IEnumerable<IEnumerable<SeedMapping>> GetSections()
     {
@@ -207,7 +201,7 @@ for seeds in [[[x, x] for x in sds], [[sds[e], sds[e] + sds[e + 1] - 1] for e in
             result.append(min(mins))
     **/
 
-    protected override string RunPartTwo()
+    protected override long RunPartTwo()
     {
         var parsed = Lines.First().Split(": ")[1].Split(' ').Select(long.Parse);
         var pairs = parsed.Select((x, i) => new { Index = i, Value = x })
@@ -260,7 +254,7 @@ for seeds in [[[x, x] for x in sds], [[sds[e], sds[e] + sds[e + 1] - 1] for e in
             var min = currentRanges.Select(p => p.start).Min();
             results.Add(min);
         }
-        return (results.Where(r => r != 0).Min() - 1).ToString();
+        return results.Where(r => r != 0).Min() - 1;
     }
 
     private long GetMinimumSeedLocation(IEnumerable<long> seeds)
