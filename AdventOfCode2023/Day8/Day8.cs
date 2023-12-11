@@ -52,48 +52,9 @@ public class MapTraverser
     private static long GCD(long a, long b) => b == 0 ? a : GCD(b, a % b);
 }
 
-public class Day8 : AdventOfCodeProgram<long>
+public class Day8(string? text = null) : AdventOfCodeProgram<long>(text)
 {
-    public Day8(string? text = null) : base(text)
-    {
-    }
-
-    [Theory]
-    [InlineData(@"RL
-
-    AAA = (BBB, CCC)
-    BBB = (DDD, EEE)
-    CCC = (ZZZ, GGG)
-    DDD = (DDD, DDD)
-    EEE = (EEE, EEE)
-    GGG = (GGG, GGG)
-    ZZZ = (ZZZ, ZZZ)", 2)]
-    [InlineData(@"LLR
-
-    AAA = (BBB, BBB)
-    BBB = (AAA, ZZZ)
-    ZZZ = (ZZZ, ZZZ)", 6)]
-    public override void RunTestsPartOne(string input, long expectedResult)
-    {
-        new Day8(input).RunPartOne().Should().Be(expectedResult);
-    }
-    [Theory]
-    [InlineData(@"LR
-
-    11A = (11B, XXX)
-    11B = (XXX, 11Z)
-    11Z = (11B, XXX)
-    22A = (22B, XXX)
-    22B = (22C, 22C)
-    22C = (22Z, 22Z)
-    22Z = (22B, 22B)
-    XXX = (XXX, XXX)", 6)]
-    public override void RunTestsPartTwo(string input, long expectedResult)
-    {
-        new Day8(input).RunPartTwo().Should().Be(expectedResult);
-    }
-
-    protected override long RunPartOne()
+    public override long RunPartOne()
     {
         var instuctionSet = Lines.First().Select(c => c);
         var map = new MapTraverser(Lines.Skip(2));
@@ -101,7 +62,7 @@ public class Day8 : AdventOfCodeProgram<long>
         return steps;
     }
 
-    protected override long RunPartTwo()
+    public override long RunPartTwo()
     {
         var instuctionSet = Lines.First().Select(c => c);
         var map = new MapTraverser(Lines.Skip(2));

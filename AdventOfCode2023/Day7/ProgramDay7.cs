@@ -1,6 +1,7 @@
 ﻿using AdventOfCodeShared;
 
 namespace AdventOfCode2023;
+
 public enum HandType
 {
     FiveOfAKind = 6,
@@ -77,56 +78,16 @@ public class Hand
     }
 }
 
-public class ProgramDay7 : AdventOfCodeProgram<long>
+public class ProgramDay7(string? text = null) : AdventOfCodeProgram<long>(text)
 {
-    public ProgramDay7(string? text = null) : base(text)
-    {
-    }
-
-    [Theory]
-    [InlineData(@"32T3K 765
-T55J5 684
-KK677 28
-KTJJT 220
-QQQJA 483", 6440)]
-    public override void RunTestsPartOne(string input, long expectedResult)
-    {
-        new ProgramDay7(input).RunPartOne().Should().Be(expectedResult);
-    }
-
-    [Theory]
-    [InlineData(@"2345A 1
-Q2KJJ 13
-Q2Q2Q 19
-T3T3J 17
-T3Q33 11
-2345J 3
-J345A 2
-32T3K 5
-T55J5 29
-KK677 7
-KTJJT 34
-QQQJA 31
-JJJJJ 37
-JAAAA 43
-AAAAJ 59
-AAAAA 61
-2AAAA 23
-2JJJJ 53
-JJJJ2 41", 6839)]
-    public override void RunTestsPartTwo(string input, long expectedResult)
-    {
-        new ProgramDay7(input).RunPartTwo().Should().Be(expectedResult);
-    }
-
-    protected override long RunPartOne()
+    public override long RunPartOne()
     {
         var result = PlayGame();
         return result.Select((c, i) => c.Bid * (i + 1)).Sum();
 
     }
 
-    protected override long RunPartTwo()
+    public override long RunPartTwo()
     {
         var result = PlayGame(true);
         return result.Select((c, i) => c.Bid * (i + 1)).Sum();

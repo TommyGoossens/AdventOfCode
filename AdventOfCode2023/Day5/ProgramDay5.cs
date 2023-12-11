@@ -52,90 +52,8 @@ public class SeedMapping
     }
 }
 
-public class ProgramDay5 : AdventOfCodeProgram<long>
+public class ProgramDay5(string? text = null) : AdventOfCodeProgram<long>(text)
 {
-    public ProgramDay5(string? text = null) : base(text)
-    {
-    }
-
-    [Theory]
-    [InlineData(@"seeds: 79 14 55 13
-
-seed-to-soil map:
-50 98 2
-52 50 48
-
-soil-to-fertilizer map:
-0 15 37
-37 52 2
-39 0 15
-
-fertilizer-to-water map:
-49 53 8
-0 11 42
-42 0 7
-57 7 4
-
-water-to-light map:
-88 18 7
-18 25 70
-
-light-to-temperature map:
-45 77 23
-81 45 19
-68 64 13
-
-temperature-to-humidity map:
-0 69 1
-1 0 69
-
-humidity-to-location map:
-60 56 37
-56 93 4", 35)]
-    public override void RunTestsPartOne(string input, long expectedResult)
-    {
-        new ProgramDay5(input).RunPartOne().Should().Be(expectedResult);
-    }
-
-    [Theory]
-    [InlineData(@"seeds: 79 14 55 13
-
-seed-to-soil map:
-50 98 2
-52 50 48
-
-soil-to-fertilizer map:
-0 15 37
-37 52 2
-39 0 15
-
-fertilizer-to-water map:
-49 53 8
-0 11 42
-42 0 7
-57 7 4
-
-water-to-light map:
-88 18 7
-18 25 70
-
-light-to-temperature map:
-45 77 23
-81 45 19
-68 64 13
-
-temperature-to-humidity map:
-0 69 1
-1 0 69
-
-humidity-to-location map:
-60 56 37
-56 93 4", 46)]
-    public override void RunTestsPartTwo(string input, long expectedResult)
-    {
-        new ProgramDay5(input).RunPartTwo().Should().Be(expectedResult);
-    }
-
     private IEnumerable<SeedMapping> GetSeedMappings(IEnumerable<string> trimmed, IEnumerable<SeedHeader> headers, int headerIndex, int i)
     {
         var startingPosition = trimmed.Skip(headerIndex + 1);
@@ -143,7 +61,7 @@ humidity-to-location map:
         return startingPosition.Select(l => new SeedMapping(l));
     }
 
-    protected override long RunPartOne()
+    public override long RunPartOne()
     {
         var seedsToPlant = Lines.First().Split(": ")[1].Split(' ').Select(long.Parse);
         var minimum = GetMinimumSeedLocation(seedsToPlant);
@@ -201,7 +119,7 @@ for seeds in [[[x, x] for x in sds], [[sds[e], sds[e] + sds[e + 1] - 1] for e in
             result.append(min(mins))
     **/
 
-    protected override long RunPartTwo()
+    public override long RunPartTwo()
     {
         var parsed = Lines.First().Split(": ")[1].Split(' ').Select(long.Parse);
         var pairs = parsed.Select((x, i) => new { Index = i, Value = x })

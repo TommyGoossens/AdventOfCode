@@ -11,14 +11,14 @@ namespace AdventOfCode2022.Day5
             actions = Array.Empty<string>();
         }
 
-        protected override string RunPartOne()
+        public override string RunPartOne()
         {
             var endResult1 = PerformMoveActions(GetCurrentStackAsDictionary(), actions, false);
             var part1 = string.Join("", endResult1.Select(d => d.Value.FirstOrDefault().ToString()));
             return part1;
         }
 
-        protected override string RunPartTwo()
+        public override string RunPartTwo()
         {
             var endResult2 = PerformMoveActions(GetCurrentStackAsDictionary(), actions, true);
             var part2 = string.Join("", endResult2.Select(d => d.Value.FirstOrDefault().ToString()));

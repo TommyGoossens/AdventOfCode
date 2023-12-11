@@ -8,14 +8,14 @@ namespace AdventOfCode2022.Day4
         {
         }
 
-        protected override int RunPartOne()
+        public override int RunPartOne()
         {
             var splitLines = Lines.Select(l => l.Split(new char[] { ',', '-' })).Select(ParseStringsToNumbers);
             var allContainedRows = splitLines.Where(IsContained);
             return allContainedRows.Count();
         }
 
-        protected override int RunPartTwo()
+        public override int RunPartTwo()
         {
             var splitLines = Lines.Select(l => l.Split(new char[] { ',', '-' })).Select(ParseStringsToNumbers);
             var allOverlappingRows = splitLines.Where(HasOverlap);

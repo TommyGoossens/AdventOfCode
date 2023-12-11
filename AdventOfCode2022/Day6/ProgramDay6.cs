@@ -8,13 +8,13 @@ namespace AdventOfCode2022.Day6
         {
         }
 
-        protected override int RunPartOne()
+        public override int RunPartOne()
         {
             var (nrOfLettersToProcess, _) = GetResult(4);
             return nrOfLettersToProcess;
         }
 
-        protected override int RunPartTwo()
+        public override int RunPartTwo()
         {
             var (nrOfLettersToProcess, _) = GetResult(14);
             return nrOfLettersToProcess;

@@ -8,14 +8,14 @@ namespace AdventOfCode2022.Day1
         {
         }
 
-        protected override int RunPartOne()
+        public override int RunPartOne()
         {
             var orderedElfList = GetOrderedElfList();
             var mostCalories = orderedElfList.First(); // Part1
             return mostCalories;
         }
 
-        protected override int RunPartTwo()
+        public override int RunPartTwo()
         {
             var orderedElfList = GetOrderedElfList();
             var top3 = orderedElfList.Sum(e => e); // Part 2

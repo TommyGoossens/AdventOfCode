@@ -10,9 +10,9 @@ namespace AdventOfCode2021.Day2
         {
         }
 
-        protected override int RunPartOne() => CalculateDepth(false);
+        public override int RunPartOne() => CalculateDepth(false);
 
-        protected override int RunPartTwo() => CalculateDepth(true);
+        public override int RunPartTwo() => CalculateDepth(true);
 
 
         private int CalculateDepth(bool takeAimIntoAccount)

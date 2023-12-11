@@ -41,9 +41,9 @@ namespace AdventOfCode2021.Day4
         {
         }
 
-        protected override int RunPartOne() => PlayBingo().part1;
+        public override int RunPartOne() => PlayBingo().part1;
 
-        protected override int RunPartTwo() => PlayBingo().part2;
+        public override int RunPartTwo() => PlayBingo().part2;
 
         private (int part1, int part2) PlayBingo()
         {

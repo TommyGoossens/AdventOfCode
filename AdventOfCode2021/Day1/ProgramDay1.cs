@@ -10,9 +10,9 @@ namespace AdventOfCode2021.Day1
         {
         }
 
-        protected override int RunPartOne() => GetAnswerPart1();
+        public override int RunPartOne() => GetAnswerPart1();
 
-        protected override int RunPartTwo() => GetAnswerPart2();
+        public override int RunPartTwo() => GetAnswerPart2();
 
         private int GetAnswerPart1()
         {

@@ -28,13 +28,13 @@ namespace AdventOfCode2021.Day3
         {
         }
 
-        protected override int RunPartOne()
+        public override int RunPartOne()
         {
             var (gamma, epsilon) = SolvePartOne();
             return gamma * epsilon;
         }
 
-        protected override int RunPartTwo()
+        public override int RunPartTwo()
         {
             var (oxygen, scrubber) = SolvePartTwo();
             return oxygen * scrubber;

@@ -10,8 +10,8 @@ namespace AdventOfCode2022.Day8
             linesAsInt = Lines.Select(l => l.Select(c => char.GetNumericValue(c)).ToList()).ToList();
         }
 
-        protected override int RunPartOne() => HandlePartOne();
-        protected override int RunPartTwo() => HandlePartTwo();
+        public override int RunPartOne() => HandlePartOne();
+        public override int RunPartTwo() => HandlePartTwo();
 
         private int GetVisibleTreesInList(IEnumerable<double> trees, double currentTree)
         {

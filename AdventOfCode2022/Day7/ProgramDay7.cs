@@ -57,7 +57,7 @@ namespace AdventOfCode2022.Day7
         public ProgramDay7(string? text = null) : base(text)
         {
         }
-        protected override int RunPartTwo()
+        public override int RunPartTwo()
         {
             var listOfAllKnownDirectories = GetListOfAllKnownDirectories();
             var rootDir = listOfAllKnownDirectories.First(d => d.Name.Equals("/"));
@@ -70,7 +70,7 @@ namespace AdventOfCode2022.Day7
             return part2;
         }
 
-        protected override int RunPartOne()
+        public override int RunPartOne()
         {
             var listOfAllKnownDirectories = GetListOfAllKnownDirectories();
 

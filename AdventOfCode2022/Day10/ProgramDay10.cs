@@ -51,13 +51,13 @@ namespace AdventOfCode2022.Day10
         public ProgramDay10(string? text = null) : base(text)
         { }
 
-        protected override int RunPartOne()
+        public override int RunPartOne()
         {
             var operations = Lines.Select(Operation.Parse);
             return new HandheldCommunicationProgramParser().GetSumOfSignalStrenghts(operations);
         }
 
-        protected override int RunPartTwo()
+        public override int RunPartTwo()
         {
             return 0;
         }

@@ -11,13 +11,13 @@ namespace AdventOfCode2021.Day5
         {
         }
 
-        protected override int RunPartOne()
+        public override int RunPartOne()
         {
             var ventLines = Lines.Select(l => new Line(l.Split(" -> ")));
             var overlappingPoints = ventLines.Select(l => l.GetoverlappingPoints(ventLines));
             return 0;
         }
-        protected override int RunPartTwo()
+        public override int RunPartTwo()
         {
             return 0;
         }

@@ -6,6 +6,14 @@ public interface IAdventOfCodeProgram
     public int DayNumber { get; }
 
 }
+
+public abstract class AdventOfCodeTestRunner<T>
+{
+    public abstract void RunTestsPartOne(string input, T expectedResult);
+    public abstract void RunTestsPartTwo(string input, T expectedResult);
+}
+
+
 public abstract class AdventOfCodeProgram<T> : IAdventOfCodeProgram
 {
     public int DayNumber { get; private init; }
@@ -23,11 +31,10 @@ public abstract class AdventOfCodeProgram<T> : IAdventOfCodeProgram
         }
     }
 
-    protected abstract T RunPartOne();
-    public abstract void RunTestsPartOne(string input, T expectedResult);
+    public abstract T RunPartOne();
 
-    protected abstract T RunPartTwo();
-    public abstract void RunTestsPartTwo(string input, T expectedResult);
+
+    public abstract T RunPartTwo();
 
     public void RunProgramAndDisplayAnswer()
     {

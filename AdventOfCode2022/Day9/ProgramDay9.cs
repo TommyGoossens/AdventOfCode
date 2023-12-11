@@ -7,14 +7,14 @@ namespace AdventOfCode2022.Day9
     {
         public ProgramDay9(string? text = null) : base(text)
         { }
-        protected override int RunPartOne()
+        public override int RunPartOne()
         {
             var rope = new Rope(1);
             foreach ((char direction, int steps) in Lines.Select(l => (l[0], int.Parse(l.Split(" ").Last())))) rope.Move(direction, steps);
             return rope.Knots[1].Distinct().Count();
         }
 
-        protected override int RunPartTwo()
+        public override int RunPartTwo()
         {
             var rope = new Rope(9);
             foreach ((char direction, int steps) in Lines.Select(l => (l[0], int.Parse(l.Split(" ").Last())))) rope.Move(direction, steps);

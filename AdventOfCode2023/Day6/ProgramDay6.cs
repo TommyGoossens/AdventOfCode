@@ -26,29 +26,9 @@ public class Race
     private bool RaceIsOverHalftime(int elapsedTime) => elapsedTime >= Time / 2;
 }
 
-public class ProgramDay6 : AdventOfCodeProgram<long>
+public class ProgramDay6(string? text = null) : AdventOfCodeProgram<long>(text)
 {
-    public ProgramDay6(string? text = null) : base(text)
-    {
-    }
-
-    [Theory]
-    [InlineData(@"Time:      7  15   30
-Distance:  9  40  200", 288)]
-    public override void RunTestsPartOne(string input, long expectedResult)
-    {
-        new ProgramDay6(input).RunPartOne().Should().Be(expectedResult);
-    }
-
-    [Theory]
-    [InlineData(@"Time:      7  15   30
-Distance:  9  40  200", 71503)]
-    public override void RunTestsPartTwo(string input, long expectedResult)
-    {
-        new ProgramDay6(input).RunPartTwo().Should().Be(expectedResult);
-    }
-
-    protected override long RunPartOne()
+    public override long RunPartOne()
     {
         var times = Lines.First().Split(" ").Where(s => int.TryParse(s, out _)).Select(int.Parse);
         var distances = Lines.Last().Split(" ").Where(s => int.TryParse(s, out _)).Select(int.Parse);
@@ -57,7 +37,7 @@ Distance:  9  40  200", 71503)]
         return wins.Aggregate((a, x) => a * x);
     }
 
-    protected override long RunPartTwo()
+    public override long RunPartTwo()
     {
         var startTimeParsing = DateTime.Now;
         var timeString = string.Join("", Lines.First().Split(" ").Where(s => int.TryParse(s, out _)));
